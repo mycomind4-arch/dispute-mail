@@ -11,7 +11,7 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "tra
       <div className="container flex min-h-16 items-center justify-between py-3">
         <Link to="/" className="flex items-center gap-2.5">
           <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${transparent ? "bg-white/15" : "bg-teal-700"}`}>
-            <FileWarning size={18} className={transparent ? "text-rose-400" : "text-rose-400"} />
+            <FileWarning size={18} className="text-rose-400" />
           </div>
           <span className={`text-lg font-bold tracking-tight ${transparent ? "text-white" : "text-teal-700"}`} style={{ fontFamily: "var(--font-serif)" }}>
             Dispute Mail
@@ -20,15 +20,15 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "tra
 
         <nav className="hidden items-center gap-7 md:flex">
           {[
+            { label: "Workflow directory", href: "/workflows" },
             { label: "How it works", href: "/#how" },
-            { label: "What you can dispute", href: "/#workflows" },
             { label: "Pricing", href: "/pricing" },
             { label: "Resources", href: "/resources" },
             { label: "FAQ", href: "/faq" },
           ].map((item) => (
-            <a key={item.label} href={item.href} className={`text-sm font-medium transition-colors ${transparent ? "text-white/80 hover:text-white" : "text-teal-600 hover:text-teal-700"}`}>
+            <Link key={item.label} to={item.href} className={`text-sm font-medium transition-colors ${transparent ? "text-white/80 hover:text-white" : "text-teal-600 hover:text-teal-700"}`}>
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -50,17 +50,17 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "tra
         <div className="border-t border-warm-border bg-white md:hidden">
           <div className="container flex flex-col gap-1 py-3">
             {[
+              { label: "Workflow directory", href: "/workflows" },
               { label: "How it works", href: "/#how" },
-              { label: "What you can dispute", href: "/#workflows" },
               { label: "Pricing", href: "/pricing" },
               { label: "Resources", href: "/resources" },
               { label: "FAQ", href: "/faq" },
               { label: "My Mailings", href: "/dashboard" },
               { label: "Contact", href: "/contact" },
             ].map((item) => (
-              <a key={item.label} href={item.href} className="rounded-lg px-3 py-2.5 text-sm font-medium text-teal-600 hover:bg-teal-50" onClick={() => setOpen(false)}>
+              <Link key={item.label} to={item.href} className="rounded-lg px-3 py-2.5 text-sm font-medium text-teal-600 hover:bg-teal-50" onClick={() => setOpen(false)}>
                 {item.label}
-              </a>
+              </Link>
             ))}
             <Link to="/workflows/credit-report" className="btn-rose mt-2 justify-center" onClick={() => setOpen(false)}>
               Start
