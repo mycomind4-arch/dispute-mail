@@ -8,6 +8,7 @@ const inputSchema = z.object({
   workflowId: z.string(),
   facts: z.record(z.string(), z.string().optional()).default({}),
   objective: z.string().max(10_000).optional(),
+  evidenceStatuses: z.record(z.string(), z.string()).default({}),
 });
 
 export const analyzeUploadedWorkflowDocument = createServerFn({ method: "POST" })
@@ -18,11 +19,16 @@ export const analyzeUploadedWorkflowDocument = createServerFn({ method: "POST" }
     if (file.size <= 0) throw new Error("The document is empty");
     if (file.size > 15 * 1024 * 1024) throw new Error("The document exceeds the 15 MB upload limit");
 
-    const workflowIdValue = String(data.get("workflowId") ?? "");
+    let facts: Record<string, string | undefined> = {};
+    let evidenceStatuses: Record<string, string> = {};
+    try { facts = JSON.parse(String(data.get("facts") ?? "{}")); } catch { throw new Error("Invalid facts payload"); }
+    try { evidenceStatuses = JSON.parse(String(data.get("evidenceStatuses") ?? "{}")); } catch { throw new Error("Invalid evidence status payload"); }
+
     const parsed = inputSchema.parse({
-      workflowId: workflowIdValue,
-      facts: JSON.parse(String(data.get("facts") ?? "{}")),
+      workflowId: String(data.get("workflowId") ?? ""),
+      facts,
       objective: String(data.get("objective") ?? "") || undefined,
+      evidenceStatuses,
     });
     if (!(parsed.workflowId in workflows)) throw new Error(`Unknown workflow: ${parsed.workflowId}`);
     const workflowId = parsed.workflowId as WorkflowId;
@@ -41,10 +47,17 @@ export const analyzeUploadedWorkflowDocument = createServerFn({ method: "POST" }
       pdfBase64,
       facts: parsed.facts,
       objective: parsed.objective,
+      evidenceStatuses: parsed.evidenceStatuses,
     });
 
     if (analysis.documentId !== stored.id || analysis.classification.type !== workflowId) {
       throw new Error("Claude returned an analysis for the wrong workflow or stored document");
+    }
+
+    const requiredEvidenceIds = new Set(analysis.evidence.map((item) => item.id));
+    const suppliedEvidenceIds = new Set(Object.keys(parsed.evidenceStatuses));
+    if ([...requiredEvidenceIds].some((id) => !suppliedEvidenceIds.has(id))) {
+      return { document: stored, analysis, draft: null, validation: { passed: false, issues: ["AI analysis did not receive complete evidence-state coverage"] }, blocked: true };
     }
 
     if (analysis.blockingIssues.length > 0) {
