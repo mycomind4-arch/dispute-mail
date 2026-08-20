@@ -141,6 +141,19 @@ var ArrowRight = createLucideIcon("arrow-right", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var ArrowUpRight = createLucideIcon("arrow-up-right", [["path", {
+	d: "M7 7h10v10",
+	key: "1tivn9"
+}], ["path", {
+	d: "M7 17 17 7",
+	key: "1vkiza"
+}]]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var BookOpen = createLucideIcon("book-open", [["path", {
 	d: "M12 7v14",
 	key: "1akyts"
@@ -148,6 +161,34 @@ var BookOpen = createLucideIcon("book-open", [["path", {
 	d: "M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z",
 	key: "ruj8y"
 }]]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Building2 = createLucideIcon("building-2", [
+	["path", {
+		d: "M10 12h4",
+		key: "a56b0p"
+	}],
+	["path", {
+		d: "M10 8h4",
+		key: "1sr2af"
+	}],
+	["path", {
+		d: "M14 21v-3a2 2 0 0 0-4 0v3",
+		key: "1rgiei"
+	}],
+	["path", {
+		d: "M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2",
+		key: "secmi2"
+	}],
+	["path", {
+		d: "M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16",
+		key: "16ra0t"
+	}]
+]);
 /**
 * @license lucide-react v0.575.0 - ISC
 *
@@ -453,6 +494,30 @@ var Quote = createLucideIcon("quote", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var ReceiptText = createLucideIcon("receipt-text", [
+	["path", {
+		d: "M13 16H8",
+		key: "wsln4y"
+	}],
+	["path", {
+		d: "M14 8H8",
+		key: "1l3xfs"
+	}],
+	["path", {
+		d: "M16 12H8",
+		key: "1fr5h0"
+	}],
+	["path", {
+		d: "M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z",
+		key: "ycz6yz"
+	}]
+]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var Search = createLucideIcon("search", [["path", {
 	d: "m21 21-4.34-4.34",
 	key: "14j7rj"
@@ -570,6 +635,36 @@ var Stamp = createLucideIcon("stamp", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var Stethoscope = createLucideIcon("stethoscope", [
+	["path", {
+		d: "M11 2v2",
+		key: "1539x4"
+	}],
+	["path", {
+		d: "M5 2v2",
+		key: "1yf1q8"
+	}],
+	["path", {
+		d: "M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1",
+		key: "rb5t3r"
+	}],
+	["path", {
+		d: "M8 15a6 6 0 0 0 12 0v-3",
+		key: "x18d4x"
+	}],
+	["circle", {
+		cx: "20",
+		cy: "10",
+		r: "2",
+		key: "ts1r5v"
+	}]
+]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var Trash2 = createLucideIcon("trash-2", [
 	["path", {
 		d: "M10 11v6",
@@ -639,4 +734,4 @@ var X = createLucideIcon("x", [["path", {
 	key: "d8bk6v"
 }]]);
 //#endregion
-export { ArrowRight as A, Eye as C, ChevronDown as D, CircleCheck as E, Check as O, FileCheck as S, Clock as T, Lock as _, Stamp as a, FileText as b, ShieldCheck as c, Search as d, Quote as f, Mail as g, Menu as h, Trash2 as i, ArrowLeft as j, BookOpen as k, ShieldAlert as l, MessageSquare as m, TriangleAlert as n, Sparkles as o, PackageCheck as p, TrendingUp as r, Shield as s, X as t, Send as u, House as v, CreditCard as w, FileExclamationPoint as x, FileUp as y };
+export { Check as A, FileExclamationPoint as C, Clock as D, CreditCard as E, ArrowLeft as F, BookOpen as M, ArrowUpRight as N, CircleCheck as O, ArrowRight as P, FileText as S, Eye as T, Menu as _, Stethoscope as a, House as b, Shield as c, Send as d, Search as f, MessageSquare as g, PackageCheck as h, Trash2 as i, Building2 as j, ChevronDown as k, ShieldCheck as l, Quote as m, TriangleAlert as n, Stamp as o, ReceiptText as p, TrendingUp as r, Sparkles as s, X as t, ShieldAlert as u, Mail as v, FileCheck as w, FileUp as x, Lock as y };

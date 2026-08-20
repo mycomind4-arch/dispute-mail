@@ -18,8 +18,10 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as WriteADisputeLetterRouteImport } from './routes/write-a-dispute-letter'
 import { Route as ResourcesIndexRouteImport } from './routes/resources/index'
 import { Route as ResourcesSlugRouteImport } from './routes/resources/$slug'
+import { Route as WorkflowsIndexRouteImport } from './routes/workflows/index'
 import { Route as WorkflowsBillingErrorRouteImport } from './routes/workflows/billing-error'
 import { Route as WorkflowsCreditReportRouteImport } from './routes/workflows/credit-report'
 import { Route as WorkflowsDebtValidationRouteImport } from './routes/workflows/debt-validation'
@@ -70,6 +72,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WriteADisputeLetterRoute = WriteADisputeLetterRouteImport.update({
+  id: '/write-a-dispute-letter',
+  path: '/write-a-dispute-letter',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResourcesIndexRoute = ResourcesIndexRouteImport.update({
   id: '/resources/',
   path: '/resources/',
@@ -78,6 +85,11 @@ const ResourcesIndexRoute = ResourcesIndexRouteImport.update({
 const ResourcesSlugRoute = ResourcesSlugRouteImport.update({
   id: '/resources/$slug',
   path: '/resources/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkflowsIndexRoute = WorkflowsIndexRouteImport.update({
+  id: '/workflows/',
+  path: '/workflows/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkflowsBillingErrorRoute = WorkflowsBillingErrorRouteImport.update({
@@ -112,12 +124,14 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/write-a-dispute-letter': typeof WriteADisputeLetterRoute
   '/resources/$slug': typeof ResourcesSlugRoute
   '/workflows/billing-error': typeof WorkflowsBillingErrorRoute
   '/workflows/credit-report': typeof WorkflowsCreditReportRoute
   '/workflows/debt-validation': typeof WorkflowsDebtValidationRoute
   '/workflows/unauthorized-charge': typeof WorkflowsUnauthorizedChargeRoute
   '/resources/': typeof ResourcesIndexRoute
+  '/workflows/': typeof WorkflowsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -129,12 +143,14 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/write-a-dispute-letter': typeof WriteADisputeLetterRoute
   '/resources/$slug': typeof ResourcesSlugRoute
   '/workflows/billing-error': typeof WorkflowsBillingErrorRoute
   '/workflows/credit-report': typeof WorkflowsCreditReportRoute
   '/workflows/debt-validation': typeof WorkflowsDebtValidationRoute
   '/workflows/unauthorized-charge': typeof WorkflowsUnauthorizedChargeRoute
   '/resources': typeof ResourcesIndexRoute
+  '/workflows': typeof WorkflowsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -147,12 +163,14 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/write-a-dispute-letter': typeof WriteADisputeLetterRoute
   '/resources/$slug': typeof ResourcesSlugRoute
   '/workflows/billing-error': typeof WorkflowsBillingErrorRoute
   '/workflows/credit-report': typeof WorkflowsCreditReportRoute
   '/workflows/debt-validation': typeof WorkflowsDebtValidationRoute
   '/workflows/unauthorized-charge': typeof WorkflowsUnauthorizedChargeRoute
   '/resources/': typeof ResourcesIndexRoute
+  '/workflows/': typeof WorkflowsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -166,12 +184,14 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/terms'
+    | '/write-a-dispute-letter'
     | '/resources/$slug'
     | '/workflows/billing-error'
     | '/workflows/credit-report'
     | '/workflows/debt-validation'
     | '/workflows/unauthorized-charge'
     | '/resources/'
+    | '/workflows/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -183,12 +203,14 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/terms'
+    | '/write-a-dispute-letter'
     | '/resources/$slug'
     | '/workflows/billing-error'
     | '/workflows/credit-report'
     | '/workflows/debt-validation'
     | '/workflows/unauthorized-charge'
     | '/resources'
+    | '/workflows'
   id:
     | '__root__'
     | '/'
@@ -200,12 +222,14 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/terms'
+    | '/write-a-dispute-letter'
     | '/resources/$slug'
     | '/workflows/billing-error'
     | '/workflows/credit-report'
     | '/workflows/debt-validation'
     | '/workflows/unauthorized-charge'
     | '/resources/'
+    | '/workflows/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -218,12 +242,14 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
+  WriteADisputeLetterRoute: typeof WriteADisputeLetterRoute
   ResourcesSlugRoute: typeof ResourcesSlugRoute
   WorkflowsBillingErrorRoute: typeof WorkflowsBillingErrorRoute
   WorkflowsCreditReportRoute: typeof WorkflowsCreditReportRoute
   WorkflowsDebtValidationRoute: typeof WorkflowsDebtValidationRoute
   WorkflowsUnauthorizedChargeRoute: typeof WorkflowsUnauthorizedChargeRoute
   ResourcesIndexRoute: typeof ResourcesIndexRoute
+  WorkflowsIndexRoute: typeof WorkflowsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -291,6 +317,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/write-a-dispute-letter': {
+      id: '/write-a-dispute-letter'
+      path: '/write-a-dispute-letter'
+      fullPath: '/write-a-dispute-letter'
+      preLoaderRoute: typeof WriteADisputeLetterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/resources/': {
       id: '/resources/'
       path: '/resources'
@@ -303,6 +336,13 @@ declare module '@tanstack/react-router' {
       path: '/resources/$slug'
       fullPath: '/resources/$slug'
       preLoaderRoute: typeof ResourcesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workflows/': {
+      id: '/workflows/'
+      path: '/workflows'
+      fullPath: '/workflows/'
+      preLoaderRoute: typeof WorkflowsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/workflows/billing-error': {
@@ -346,12 +386,14 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
+  WriteADisputeLetterRoute: WriteADisputeLetterRoute,
   ResourcesSlugRoute: ResourcesSlugRoute,
   WorkflowsBillingErrorRoute: WorkflowsBillingErrorRoute,
   WorkflowsCreditReportRoute: WorkflowsCreditReportRoute,
   WorkflowsDebtValidationRoute: WorkflowsDebtValidationRoute,
   WorkflowsUnauthorizedChargeRoute: WorkflowsUnauthorizedChargeRoute,
   ResourcesIndexRoute: ResourcesIndexRoute,
+  WorkflowsIndexRoute: WorkflowsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

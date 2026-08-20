@@ -33,3 +33,52 @@ describe("dispute gold-standard gates", () => {
     expect(canSubmitDispute({ ...baseline, proofReady: false })).toBe(false);
   });
 });
+
+describe("dispute submission regression: invalid analysis cannot reach mailing", () => {
+  it("blocks submission when evidence is unresolved even if all other gates pass", () => {
+    const analysis = cleanAnalysis({
+      evidence: [{ id: "e1", description: "Report", status: "requested", supportsFindingIds: [] }],
+    });
+    const baseline = { analysis, draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true };
+    expect(canSubmitDispute(baseline)).toBe(false);
+  });
+
+  it("blocks submission when findings are unresolved even if all other gates pass", () => {
+    const analysis = cleanAnalysis({
+      findings: [{ id: "f1", state: "ambiguous", title: "Ambiguous", detail: "Needs resolution", severity: "medium" }],
+    });
+    const baseline = { analysis, draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true };
+    expect(canSubmitDispute(baseline)).toBe(false);
+  });
+
+  it("blocks submission when blocking issues exist even if all other gates pass", () => {
+    const analysis = cleanAnalysis({ blockingIssues: ["Missing deadline"] });
+    const baseline = { analysis, draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true };
+    expect(canSubmitDispute(baseline)).toBe(false);
+  });
+
+  it("blocks submission when draft is not validated even with clean analysis", () => {
+    const baseline = { analysis: cleanAnalysis(), draftValidated: false, humanApproved: true, recipientComplete: true, proofReady: true };
+    expect(canSubmitDispute(baseline)).toBe(false);
+  });
+
+  it("blocks submission when human approval is missing even with clean analysis", () => {
+    const baseline = { analysis: cleanAnalysis(), draftValidated: true, humanApproved: false, recipientComplete: true, proofReady: true };
+    expect(canSubmitDispute(baseline)).toBe(false);
+  });
+
+  it("blocks submission when recipient is incomplete even with clean analysis", () => {
+    const baseline = { analysis: cleanAnalysis(), draftValidated: true, humanApproved: true, recipientComplete: false, proofReady: true };
+    expect(canSubmitDispute(baseline)).toBe(false);
+  });
+
+  it("blocks submission when proof is not ready even with clean analysis", () => {
+    const baseline = { analysis: cleanAnalysis(), draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: false };
+    expect(canSubmitDispute(baseline)).toBe(false);
+  });
+
+  it("only passes when ALL gates are satisfied simultaneously", () => {
+    const baseline = { analysis: cleanAnalysis(), draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true };
+    expect(canSubmitDispute(baseline)).toBe(true);
+  });
+});
