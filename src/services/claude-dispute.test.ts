@@ -26,15 +26,24 @@ describe("Claude dispute adapter", () => {
     await expect(analyzeWithClaude({ workflowId: "credit-report", documentId: "doc-1", text: "source" })).rejects.toThrow(/invalid structured JSON/);
   });
 
-  it("accepts schema-valid analysis output", async () => {
+  it("accepts schema-valid analysis output that covers the whole workflow contract", async () => {
     process.env.ANTHROPIC_API_KEY = "test-key";
     process.env.ANTHROPIC_MODEL = "test-model";
     const analysis = {
       documentId: "doc-1",
       classification: { type: "credit-report", confidence: 0.95 },
-      facts: [{ label: "credit_bureau", value: "Equifax" }],
+      facts: [
+        { label: "credit_bureau", value: "Equifax" },
+        { label: "account_reference", value: "ABC123" },
+        { label: "reporting_error", value: "Balance is incorrect" },
+        { label: "requested_correction", value: "Correct the balance" },
+      ],
       findings: [],
-      evidence: [{ id: "e1", description: "Credit report", status: "verified", supportsFindingIds: [] }],
+      evidence: [
+        { id: "evidence-credit-report-page-or-excerpt", description: "Credit report page or excerpt", status: "verified", supportsFindingIds: [] },
+        { id: "evidence-identity-address-support-when-relevant", description: "Identity/address support when relevant", status: "verified", supportsFindingIds: [] },
+        { id: "evidence-documents-establishing-the-correct-information", description: "Documents establishing the correct information", status: "verified", supportsFindingIds: [] },
+      ],
       strategy: ["Request investigation"],
       blockingIssues: [],
     };
