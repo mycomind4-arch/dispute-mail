@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { WorkflowProfile } from "./workflow-profiles";
 
 export const disputeFindingStateSchema = z.enum([
   "confirmed",
@@ -39,10 +40,94 @@ export const disputeAnalysisSchema = z.object({
 });
 export type DisputeAnalysis = z.infer<typeof disputeAnalysisSchema>;
 
+function missingFinding(id: string, title: string, detail: string): DisputeFinding {
+  return { id, state: "missing", title, detail, severity: "high" };
+}
+
 /**
- * Deterministic first-pass credit-report analysis. This is deliberately
- * conservative: it identifies explicit gaps and claims from the user's
- * supplied text rather than inventing bureau findings.
+ * Profile-driven deterministic analysis shared by every dispute workflow.
+ * The profile supplies the domain-specific intake/evidence contract; the engine
+ * supplies the common provenance, blocking, review, approval, and mailing model.
+ */
+export function analyzeDisputeWorkflowInput(input: {
+  documentId: string;
+  text: string;
+  profile: WorkflowProfile;
+  workflowFacts?: Record<string, string | undefined>;
+  objective?: string;
+}): DisputeAnalysis {
+  const text = input.text.trim();
+  const factsInput = input.workflowFacts ?? {};
+  const objective = input.objective?.trim() ?? "";
+  const findings: DisputeFinding[] = [];
+  const evidence: EvidenceItem[] = [];
+  const blockingIssues: string[] = [];
+
+  if (!text) {
+    findings.push(missingFinding("source-text", "Source document missing", "A source document must be available before dispute findings can be grounded."));
+    blockingIssues.push("Source document text is required.");
+  }
+
+  for (const requirement of input.profile.requiredFacts) {
+    const key = requirement.toLowerCase().replace(/[^a-z0-9]+(.)/g, (_, char: string) => char.toUpperCase()).replace(/[^a-zA-Z0-9]/g, "");
+    const value = Object.entries(factsInput).find(([name, candidate]) =>
+      Boolean(candidate) && (name.toLowerCase() === key.toLowerCase() || name.toLowerCase().includes(key.toLowerCase()) || key.toLowerCase().includes(name.toLowerCase())),
+    )?.[1];
+    if (!value?.trim()) {
+      const id = `required-${key}`;
+      findings.push(missingFinding(id, `Missing ${requirement}`, `Provide ${requirement} before the dispute can be approved.`));
+      evidence.push({ id: `evidence-${id}`, description: `User-provided information establishing ${requirement}`, status: "missing", supportsFindingIds: [id] });
+      blockingIssues.push(`${requirement} is required.`);
+    } else {
+      findings.push({ id: `fact-${key}`, state: "confirmed", title: `Provided ${requirement}`, detail: `User provided ${requirement}.`, severity: "medium", sourceExcerpt: value.slice(0, 500) });
+    }
+  }
+
+  for (const requirement of input.profile.evidenceRequirements) {
+    const evidenceId = `evidence-${slugify(requirement)}`;
+    evidence.push({ id: evidenceId, description: requirement, status: "requested", supportsFindingIds: [] });
+  }
+
+  if (!objective) {
+    findings.push(missingFinding("objective", "Requested outcome missing", input.profile.objectivePrompt));
+    blockingIssues.push("A specific requested outcome is required.");
+  } else {
+    findings.push({ id: "objective", state: "confirmed", title: "Requested outcome supplied", detail: objective, severity: "medium", sourceExcerpt: objective.slice(0, 500) });
+  }
+
+  if (text) {
+    findings.push({ id: "source-present", state: "confirmed", title: "Source document available", detail: "The workflow has source material that can be checked against the user's factual assertions.", severity: "low" });
+  }
+
+  const strategy = [
+    `Address the dispute to the ${input.profile.recipientRole}.`,
+    `Build the letter around the requested outcome: ${input.profile.outcome}`,
+    `Use the profile deadline policy: ${input.profile.deadlinePolicy}`,
+    "Resolve missing and requested evidence before explicit approval.",
+    "Preserve source-grounded facts and avoid unsupported legal conclusions or guarantees.",
+  ];
+
+  return disputeAnalysisSchema.parse({
+    documentId: input.documentId,
+    classification: { type: input.profile.id, confidence: text ? 0.9 : 0 },
+    facts: Object.entries(factsInput)
+      .filter(([, value]) => Boolean(value?.trim()))
+      .map(([label, value]) => ({ label, value: value!, sourceExcerpt: value!.slice(0, 500) })),
+    findings,
+    evidence,
+    strategy,
+    blockingIssues,
+  });
+}
+
+function slugify(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+/**
+ * Deterministic first-pass credit-report analysis. This remains the specialized
+ * analyzer for the existing credit-report workflow; other workflows use the
+ * profile-driven analyzer above.
  */
 export function analyzeCreditReportInput(input: {
   documentId: string;
@@ -82,37 +167,15 @@ export function analyzeCreditReportInput(input: {
 
   if (input.accountNumber && !text.includes(input.accountNumber)) {
     const id = "account-reference-not-found";
-    findings.push({
-      id,
-      state: "requires_verification",
-      title: "Account/reference number not found in supplied text",
-      detail: "Verify the account/reference number against the uploaded source document before mailing.",
-      severity: "medium",
-    });
+    findings.push({ id, state: "requires_verification", title: "Account/reference number not found in supplied text", detail: "Verify the account/reference number against the uploaded source document before mailing.", severity: "medium" });
     evidence.push({ id: `evidence-${id}`, description: "Source document containing the disputed account/reference number", status: "requested", supportsFindingIds: [id] });
   }
 
   if (input.reportDate && lines.length > 0 && !text.includes(input.reportDate)) {
-    const id = "report-date-not-found";
-    findings.push({
-      id,
-      state: "requires_verification",
-      title: "Report date not found in supplied text",
-      detail: "Verify the report date against the uploaded source document before relying on it in the dispute.",
-      severity: "low",
-    });
+    findings.push({ id: "report-date-not-found", state: "requires_verification", title: "Report date not found in supplied text", detail: "Verify the report date against the uploaded source document before relying on it in the dispute.", severity: "low" });
   }
 
-  if (facts) {
-    findings.push({
-      id: "user-facts-present",
-      state: "confirmed",
-      title: "User supplied dispute facts",
-      detail: "The workflow has user-provided factual assertions that can be reviewed against source evidence.",
-      severity: "medium",
-      sourceExcerpt: facts.slice(0, 500),
-    });
-  }
+  if (facts) findings.push({ id: "user-facts-present", state: "confirmed", title: "User supplied dispute facts", detail: "The workflow has user-provided factual assertions that can be reviewed against source evidence.", severity: "medium", sourceExcerpt: facts.slice(0, 500) });
 
   const strategy: string[] = [];
   if (input.bureau) strategy.push(`Address the dispute to ${input.bureau} and identify the specific item under dispute.`);
@@ -132,12 +195,8 @@ export function analyzeCreditReportInput(input: {
 }
 
 export function canApproveDispute(analysis: DisputeAnalysis): boolean {
-  const unresolvedEvidence = analysis.evidence.some((item) =>
-    item.status === "missing" || item.status === "requested" || item.status === "rejected",
-  );
-  const unresolvedFindings = analysis.findings.some((finding) =>
-    finding.state === "missing" || finding.state === "requires_verification" || finding.state === "unsupported" || finding.state === "ambiguous",
-  );
+  const unresolvedEvidence = analysis.evidence.some((item) => item.status === "missing" || item.status === "requested" || item.status === "rejected");
+  const unresolvedFindings = analysis.findings.some((finding) => finding.state === "missing" || finding.state === "requires_verification" || finding.state === "unsupported" || finding.state === "ambiguous");
   return analysis.blockingIssues.length === 0 && !unresolvedEvidence && !unresolvedFindings;
 }
 
@@ -148,9 +207,5 @@ export function canSubmitDispute(params: {
   recipientComplete: boolean;
   proofReady: boolean;
 }): boolean {
-  return canApproveDispute(params.analysis)
-    && params.draftValidated
-    && params.humanApproved
-    && params.recipientComplete
-    && params.proofReady;
+  return canApproveDispute(params.analysis) && params.draftValidated && params.humanApproved && params.recipientComplete && params.proofReady;
 }
