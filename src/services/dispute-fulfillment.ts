@@ -1,0 +1,51 @@
+import { canSubmitDispute, type DisputeAnalysis } from "@/domain/gold-standard";
+import type { MailingMethod, MailingRecipient } from "@/domain/mailing";
+import { mailMyPDFProvider } from "@/platform/mailmypdf-provider";
+
+export interface ApprovedDisputeSubmissionInput {
+  workflowId: string;
+  documentId: string;
+  analysis: DisputeAnalysis;
+  draftValidated: boolean;
+  humanApproved: boolean;
+  recipient: MailingRecipient;
+  paymentComplete: boolean;
+  mailingMethod: MailingMethod;
+  proofReady: boolean;
+  idempotencyKey: string;
+  matterReference?: string;
+}
+
+export async function submitApprovedDispute(input: ApprovedDisputeSubmissionInput) {
+  const recipientComplete = Boolean(
+    input.recipient.name && input.recipient.address1 && input.recipient.city && input.recipient.state && input.recipient.postalCode,
+  );
+
+  if (!canSubmitDispute({
+    analysis: input.analysis,
+    draftValidated: input.draftValidated,
+    humanApproved: input.humanApproved,
+    recipientComplete,
+    proofReady: input.proofReady,
+  })) {
+    throw new Error("Dispute cannot be submitted: validation, evidence, approval, recipient, or proof prerequisites are incomplete");
+  }
+
+  if (!input.paymentComplete) throw new Error("Dispute mailing requires completed payment");
+  if (!input.idempotencyKey.trim()) throw new Error("Dispute mailing requires an idempotency key");
+
+  const { providerOrderId } = await mailMyPDFProvider.createLetter({
+    workflowId: input.workflowId,
+    documentId: input.documentId,
+    recipient: input.recipient,
+    method: input.mailingMethod,
+    stripePaymentId: "verified-payment",
+    providerOrderId: undefined,
+    idempotencyKey: input.idempotencyKey,
+    matterReference: input.matterReference ?? input.workflowId,
+    matterType: "dispute-mail",
+  });
+
+  const status = await mailMyPDFProvider.getStatus(providerOrderId);
+  return { providerOrderId, status };
+}
