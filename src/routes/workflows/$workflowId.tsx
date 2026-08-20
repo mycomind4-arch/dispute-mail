@@ -16,7 +16,7 @@ export const Route = createFileRoute("/workflows/$workflowId")({
         { name: "description", content: `${workflow.description} Review the facts, organize evidence, prepare a documented dispute, and send it with tracking and proof.` },
         { name: "keywords", content: [profile.primaryKeyword, ...profile.supportingKeywords].join(", ") },
       ],
-      links: [{ rel: "canonical", href: `/workflows/${profile.slug}` }],
+      links: [{ rel: "canonical", href: `/workflows/${params.workflowId}` }],
     };
   },
   component: ProblemWorkflowPage,
