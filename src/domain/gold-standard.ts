@@ -132,5 +132,25 @@ export function analyzeCreditReportInput(input: {
 }
 
 export function canApproveDispute(analysis: DisputeAnalysis): boolean {
-  return analysis.blockingIssues.length === 0 && analysis.findings.every((finding) => finding.state !== "unsupported");
+  const unresolvedEvidence = analysis.evidence.some((item) =>
+    item.status === "missing" || item.status === "requested" || item.status === "rejected",
+  );
+  const unresolvedFindings = analysis.findings.some((finding) =>
+    finding.state === "missing" || finding.state === "requires_verification" || finding.state === "unsupported" || finding.state === "ambiguous",
+  );
+  return analysis.blockingIssues.length === 0 && !unresolvedEvidence && !unresolvedFindings;
+}
+
+export function canSubmitDispute(params: {
+  analysis: DisputeAnalysis;
+  draftValidated: boolean;
+  humanApproved: boolean;
+  recipientComplete: boolean;
+  proofReady: boolean;
+}): boolean {
+  return canApproveDispute(params.analysis)
+    && params.draftValidated
+    && params.humanApproved
+    && params.recipientComplete
+    && params.proofReady;
 }
