@@ -1,46 +1,44 @@
 # Dispute Mail — Search-Intent Page & Workflow Inventory
 
 ## Architecture
-Dispute Mail is the master vertical for structured disputes, demand letters, validation requests, billing disputes, credit disputes, and documented correspondence. The directory should organize by the dispute type and desired outcome, not by generic letter templates.
 
-## Tier 1 — Directory
-- `/` — Dispute Mail master directory
-- `/debt-disputes/`
-- `/credit-disputes/`
-- `/billing-disputes/`
-- `/consumer-disputes/`
-- `/claims-disputes/`
+Dispute Mail organizes by **specific customer problem**, not generic letter templates. Each problem maps to one workflow ID and one canonical intent page. Supporting sample/template terms belong on the canonical problem page rather than separate near-duplicate product pages.
 
-## Tier 2 — Highest-priority intent pages
-- `/debt-collection-dispute/` — debt collection dispute
-- `/dispute-collection-agency/` — dispute collection agency
-- `/debt-dispute-letter/` — debt dispute letter
-- `/dispute-letter-to-collection-agency/` — dispute letter to collection agency
-- `/credit-report-dispute-letter/` — credit dispute letter / credit bureau dispute letter
-- `/medical-collections-dispute/` — dispute medical collections
-- `/credit-card-dispute/`
-- `/billing-dispute-letter/`
-- `/charge-off-dispute/`
-- `/debt-validation-letter/`
+## Workflow catalog
 
-## Tier 3 — Workflow pages
-- Debt collection validation request
-- Debt/account accuracy dispute
-- Collection-account credit-report dispute
-- Medical debt dispute
-- Credit-card billing dispute
-- Unauthorized-charge dispute
-- Subscription/recurring-billing dispute
-- Service-contract dispute
-- Insurance/billing payment dispute
-- Charge-off dispute
-- Incorrect credit-report entry dispute
-- Follow-up after no response
-- Escalation after inadequate response
-- Cease-contact correspondence where legally appropriate
+### Debt / collections
+- `/workflows/debt-collection-dispute` — debt collection dispute
+- `/workflows/dispute-collection-agency` — dispute collection agency
+- `/workflows/debt-dispute` — debt dispute letter
+- `/workflows/debt-validation` — debt validation letter
+- `/workflows/medical-collections` — dispute medical collections
+- `/workflows/cease-contact` — cease contact / collection communication request
 
-## SEO rules
-Own the core intent once. Use examples and FAQs on the canonical page instead of creating dozens of near-duplicate “sample/template” pages. Pages targeting “letter” terms should demonstrate the workflow and lead directly into the document-building experience.
+### Credit reporting
+- `/workflows/credit-report` — credit dispute letter
+- `/workflows/credit-report-collections` — dispute collections on credit report
+- `/workflows/hard-inquiry` — hard inquiry removal letter
+- `/workflows/charge-off` — charge off dispute letter
+- `/workflows/student-loan` — student loan dispute letter
+
+### Billing / transaction
+- `/workflows/credit-card-billing` — credit card dispute letter
+- `/workflows/unauthorized-charge` — unauthorized charge dispute
+- `/workflows/billing-error` — billing dispute letter
+- `/workflows/subscription-billing` — subscription billing dispute
+- `/workflows/service-contract` — service contract dispute letter
+- `/workflows/insurance-billing` — insurance billing dispute letter
+
+### Follow-up / escalation
+- `/workflows/follow-up-no-response` — dispute follow-up with no response
+- `/workflows/inadequate-response` — dispute escalation after inadequate response
 
 ## Conversion path
-Search → dispute type → facts/evidence intake → dispute strategy → draft → review → mail/proof → response tracking.
+
+Search → exact dispute problem → profile-specific intake → source/evidence analysis → facts/provenance → strategy → draft → validation → human review → explicit approval → payment → authorized mailing → tracking → proof/audit.
+
+## SEO rules
+
+Own the core intent once. Use examples, FAQs, and supporting terms on the canonical workflow page instead of creating dozens of near-duplicate sample/template pages.
+
+Do not promise debt removal, deletion, refunds, legal outcomes, or guaranteed dispute success. Market the concrete process and documented outcome instead.
