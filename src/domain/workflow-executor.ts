@@ -1,4 +1,4 @@
-import { analyzeDisputeWorkflowInput, canApproveDispute, canSubmitDispute, type DisputeAnalysis } from "./gold-standard";
+import { analyzeDisputeWorkflowInput, canApproveDispute, canAuthorizeDisputeMail, canCompleteDisputeProof, type DisputeAnalysis } from "./gold-standard";
 import { getWorkflowProfile } from "./workflow-profiles";
 import type { WorkflowId } from "./workflows";
 
@@ -70,15 +70,16 @@ export function runProfiledDisputeWorkflow(input: WorkflowExecutionInput, conseq
       stages.push({ stage: "approval", status: consequential.humanApproved ? "passed" : "failed", error: consequential.humanApproved ? undefined : "Explicit human approval required" });
       if (!consequential.humanApproved) { blocked = true; errors.push("approval: explicit human approval required"); stages.push({ stage: "authorized-mail", status: "blocked" }); stages.push({ stage: "track", status: "blocked" }); stages.push({ stage: "prove-audit", status: "blocked" }); }
       else {
-        const canSubmit = canSubmitDispute({ analysis, draftValidated: consequential.draftValidated, humanApproved: consequential.humanApproved, recipientComplete: consequential.recipientComplete, proofReady: consequential.proofReady });
-        const submissionOk = canSubmit && consequential.paymentComplete && consequential.mailingSubmitted;
+        const authorized = canAuthorizeDisputeMail({ analysis, draftValidated: consequential.draftValidated, humanApproved: consequential.humanApproved, recipientComplete: consequential.recipientComplete, paymentComplete: consequential.paymentComplete });
+        const submissionOk = authorized && consequential.mailingSubmitted;
         stages.push({ stage: "authorized-mail", status: submissionOk ? "passed" : "failed", error: submissionOk ? undefined : "Validation, approval, recipient, payment, or provider submission incomplete" });
         if (!submissionOk) { blocked = true; errors.push("authorized-mail: fulfillment prerequisites incomplete"); stages.push({ stage: "track", status: "blocked" }); stages.push({ stage: "prove-audit", status: "blocked" }); }
         else {
           const tracked = Boolean(consequential.trackingNumber);
           stages.push({ stage: "track", status: tracked ? "passed" : "failed", detail: tracked ? `tracking=${consequential.trackingNumber}` : undefined, error: tracked ? undefined : "Tracking number missing" });
-          stages.push({ stage: "prove-audit", status: tracked && consequential.proofReady ? "passed" : "failed", error: tracked && consequential.proofReady ? undefined : "Proof of mailing is not ready" });
-          if (!tracked || !consequential.proofReady) { blocked = true; errors.push("prove-audit: tracking or proof missing"); }
+          const proofOk = canCompleteDisputeProof({ trackingNumber: consequential.trackingNumber, proofReady: consequential.proofReady });
+          stages.push({ stage: "prove-audit", status: proofOk ? "passed" : "failed", error: proofOk ? undefined : "Proof of mailing is not ready" });
+          if (!proofOk) { blocked = true; errors.push("prove-audit: tracking or proof missing"); }
         }
       }
     }
