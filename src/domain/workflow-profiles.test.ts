@@ -22,8 +22,10 @@ describe("problem-specific dispute workflow catalog", () => {
     }
   });
 
-  it("does not register duplicate primary keywords", () => {
+  it("does not register duplicate primary keywords or slugs", () => {
     const primaryKeywords = Object.values(workflowProfiles).map((profile) => profile.primaryKeyword);
+    const slugs = Object.values(workflowProfiles).map((profile) => profile.slug);
     expect(new Set(primaryKeywords).size).toBe(primaryKeywords.length);
+    expect(new Set(slugs).size).toBe(slugs.length);
   });
 });
