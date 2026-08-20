@@ -24,6 +24,7 @@ export async function analyzeWithClaudeDocument(input: {
   pdfBase64: string;
   facts?: Record<string, string | undefined>;
   objective?: string;
+  evidenceStatuses?: Record<string, string>;
 }): Promise<DisputeAnalysis> {
   const { apiKey, model } = config();
   const prompts = getWorkflowPromptPack(input.workflowId);
@@ -37,7 +38,7 @@ export async function analyzeWithClaudeDocument(input: {
     body: JSON.stringify({
       model,
       max_tokens: 7000,
-      system: `${prompts.analysisSystemPrompt}\n\nThe supplied PDF is the source document. Extract and cite only what is actually supported by the document. Return ONLY one JSON object matching the required output shape. The documentId must exactly match the supplied documentId. The classification.type must exactly match the supplied workflowId. Evidence must account for every evidence requirement relevant to the workflow.`,
+      system: `${prompts.analysisSystemPrompt}\n\nThe supplied PDF is the source document. Extract and cite only what is actually supported by the document. Return ONLY one JSON object matching the required output shape. The documentId must exactly match the supplied documentId. The classification.type must exactly match the supplied workflowId. Evidence must account for every evidence requirement relevant to the workflow. Do not treat user-provided evidence statuses as proof that evidence exists; use them as review-state context only.`,
       messages: [{
         role: "user",
         content: [
@@ -45,11 +46,11 @@ export async function analyzeWithClaudeDocument(input: {
             type: "document",
             source: { type: "base64", media_type: "application/pdf", data: input.pdfBase64 },
             title: input.filename,
-            context: JSON.stringify({ documentId: input.documentId, workflowId: input.workflowId, userFacts: input.facts ?? {}, objective: input.objective ?? "" }),
+            context: JSON.stringify({ documentId: input.documentId, workflowId: input.workflowId, userFacts: input.facts ?? {}, objective: input.objective ?? "", evidenceStatuses: input.evidenceStatuses ?? {} }),
           },
           {
             type: "text",
-            text: JSON.stringify({ documentId: input.documentId, workflowId: input.workflowId, userFacts: input.facts ?? {}, objective: input.objective ?? "", requiredOutput: { documentId: input.documentId, classification: { type: input.workflowId, confidence: "0..1" }, facts: "array", findings: "array", evidence: "array", strategy: "array", blockingIssues: "array" } }),
+            text: JSON.stringify({ documentId: input.documentId, workflowId: input.workflowId, userFacts: input.facts ?? {}, objective: input.objective ?? "", evidenceStatuses: input.evidenceStatuses ?? {}, requiredOutput: { documentId: input.documentId, classification: { type: input.workflowId, confidence: "0..1" }, facts: "array", findings: "array", evidence: "array", strategy: "array", blockingIssues: "array" } }),
           },
         ],
       }],
