@@ -5,7 +5,22 @@ import { SiteHeader } from "@/components/site-header";
 import { getWorkflowProfile } from "@/domain/workflow-profiles";
 import { workflows, type WorkflowId } from "@/domain/workflows";
 
-export const Route = createFileRoute("/workflows/$workflowId")({ component: ProblemWorkflowPage });
+export const Route = createFileRoute("/workflows/$workflowId")({
+  head: ({ params }) => {
+    if (!isWorkflowId(params.workflowId)) return {};
+    const workflow = workflows[params.workflowId];
+    const profile = getWorkflowProfile(params.workflowId);
+    return {
+      meta: [
+        { title: `${workflow.title} | Dispute Mail` },
+        { name: "description", content: `${workflow.description} Review the facts, organize evidence, prepare a documented dispute, and send it with tracking and proof.` },
+        { name: "keywords", content: [profile.primaryKeyword, ...profile.supportingKeywords].join(", ") },
+      ],
+      links: [{ rel: "canonical", href: `/workflows/${profile.slug}` }],
+    };
+  },
+  component: ProblemWorkflowPage,
+});
 
 function isWorkflowId(value: string): value is WorkflowId { return value in workflows; }
 
