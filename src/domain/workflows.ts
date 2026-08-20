@@ -42,7 +42,7 @@ export const workflows: Record<WorkflowId, WorkflowDefinition> = {
     description: "Dispute inaccurate items on your credit report with Equifax, Experian, or TransUnion under the FCRA.",
     disclaimer: "Dispute Mail provides document preparation and mailing assistance. It is not a law firm and does not provide legal advice. Credit bureaus have 30–45 days to investigate disputes under the FCRA.",
     steps: ["intro", "document", "facts", "objective", "analysis", "evidence", "strategy", "draft", "review", "attachments", "recipient", "mailing", "checkout", "submitted"],
-    lifecycle: "partial",
+    lifecycle: "gold",
     goldStandardStages: GOLD_STAGES,
   },
   "debt-validation": {

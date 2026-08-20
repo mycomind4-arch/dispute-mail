@@ -1,0 +1,121 @@
+//#region node_modules/.nitro/vite/services/ssr/assets/workflows-B0kN1LGS.js
+var GOLD_STAGES = [
+	"secure-ingest",
+	"classify",
+	"extract",
+	"understand",
+	"facts-provenance",
+	"timeline-deadlines",
+	"issues-discrepancies",
+	"evidence",
+	"authority-research",
+	"risk",
+	"strategy",
+	"draft",
+	"validate",
+	"blocking-gates",
+	"human-review",
+	"authorized-mail",
+	"track",
+	"prove-audit"
+];
+var workflows = {
+	"credit-report": {
+		id: "credit-report",
+		title: "Dispute a Credit Report Error",
+		description: "Dispute inaccurate items on your credit report with Equifax, Experian, or TransUnion under the FCRA.",
+		disclaimer: "Dispute Mail provides document preparation and mailing assistance. It is not a law firm and does not provide legal advice. Credit bureaus have 30–45 days to investigate disputes under the FCRA.",
+		steps: [
+			"intro",
+			"document",
+			"facts",
+			"objective",
+			"analysis",
+			"evidence",
+			"strategy",
+			"draft",
+			"review",
+			"attachments",
+			"recipient",
+			"mailing",
+			"checkout",
+			"submitted"
+		],
+		lifecycle: "gold",
+		goldStandardStages: GOLD_STAGES
+	},
+	"debt-validation": {
+		id: "debt-validation",
+		title: "Request Debt Validation",
+		description: "Request validation of a debt from a collector under the FDCPA within 30 days of first contact.",
+		disclaimer: "Under the FDCPA, you have 30 days from first contact to request debt validation. Dispute Mail is not a law firm and does not provide legal advice.",
+		steps: [
+			"intro",
+			"document",
+			"facts",
+			"objective",
+			"analysis",
+			"evidence",
+			"strategy",
+			"draft",
+			"review",
+			"attachments",
+			"recipient",
+			"mailing",
+			"checkout",
+			"submitted"
+		],
+		lifecycle: "partial",
+		goldStandardStages: GOLD_STAGES
+	},
+	"billing-error": {
+		id: "billing-error",
+		title: "Dispute a Billing Error",
+		description: "Dispute a medical billing error, utility overcharge, or incorrect service charge with the provider.",
+		disclaimer: "Billing disputes may have different deadlines depending on the type of charge. Dispute Mail is not a law firm and does not provide legal advice.",
+		steps: [
+			"intro",
+			"document",
+			"facts",
+			"objective",
+			"analysis",
+			"evidence",
+			"strategy",
+			"draft",
+			"review",
+			"attachments",
+			"recipient",
+			"mailing",
+			"checkout",
+			"submitted"
+		],
+		lifecycle: "partial",
+		goldStandardStages: GOLD_STAGES
+	},
+	"unauthorized-charge": {
+		id: "unauthorized-charge",
+		title: "Dispute an Unauthorized Charge",
+		description: "Dispute an unauthorized or fraudulent charge with your card issuer or bank in writing.",
+		disclaimer: "Written disputes complement but do not replace your card issuer's fraud reporting process. Dispute Mail is not a law firm and does not provide legal advice.",
+		steps: [
+			"intro",
+			"document",
+			"facts",
+			"objective",
+			"analysis",
+			"evidence",
+			"strategy",
+			"draft",
+			"review",
+			"attachments",
+			"recipient",
+			"mailing",
+			"checkout",
+			"submitted"
+		],
+		lifecycle: "partial",
+		goldStandardStages: GOLD_STAGES
+	}
+};
+//#endregion
+export { workflows as t };
