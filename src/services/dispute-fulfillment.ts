@@ -1,4 +1,4 @@
-import { canSubmitDispute, type DisputeAnalysis } from "@/domain/gold-standard";
+import { canAuthorizeDisputeMail, type DisputeAnalysis } from "@/domain/gold-standard";
 import type { MailingMethod, MailingRecipient } from "@/domain/mailing";
 import { mailMyPDFProvider } from "@/platform/mailmypdf-provider";
 
@@ -19,11 +19,9 @@ export interface ApprovedDisputeSubmissionInput {
 
 export async function submitApprovedDispute(input: ApprovedDisputeSubmissionInput) {
   const recipientComplete = Boolean(input.recipient.name && input.recipient.address1 && input.recipient.city && input.recipient.state && input.recipient.postalCode);
-
-  if (!canSubmitDispute({ analysis: input.analysis, draftValidated: input.draftValidated, humanApproved: input.humanApproved, recipientComplete, proofReady: input.proofReady })) {
-    throw new Error("Dispute cannot be submitted: validation, evidence, approval, recipient, or proof prerequisites are incomplete");
+  if (!canAuthorizeDisputeMail({ analysis: input.analysis, draftValidated: input.draftValidated, humanApproved: input.humanApproved, recipientComplete, paymentComplete: input.paymentComplete })) {
+    throw new Error("Dispute cannot be submitted: validation, evidence, approval, recipient, or payment prerequisites are incomplete");
   }
-  if (!input.paymentComplete) throw new Error("Dispute mailing requires completed payment");
   if (!input.stripePaymentId.trim()) throw new Error("Dispute mailing requires a verified Stripe payment identifier");
   if (!input.idempotencyKey.trim()) throw new Error("Dispute mailing requires an idempotency key");
 
