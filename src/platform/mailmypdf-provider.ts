@@ -9,7 +9,7 @@ function mapMailType(method: MailingOrderDraft["method"]): MailType {
   }
 }
 
-function mapStatus(status: unknown): MailingStatus["state"] {
+export function mapStatus(status: unknown): MailingStatus["state"] {
   switch (status) {
     case "created":
     case "submitted": return "submitted";
@@ -22,7 +22,7 @@ function mapStatus(status: unknown): MailingStatus["state"] {
     case "cancelled":
     case "canceled": return "cancelled";
     case "refunded": return "refunded";
-    default: return "submitted";
+    default: throw new Error(`Unknown MailMyPDF fulfillment status: ${String(status)}`);
   }
 }
 
@@ -30,6 +30,7 @@ export class MailMyPDFProvider implements MailingProvider {
   async createLetter(input: MailingOrderDraft): Promise<{ providerOrderId: string }> {
     if (!input.documentId) throw new Error("MailMyPDF submission requires a documentId");
     const idempotencyKey = input.idempotencyKey ?? `${input.workflowId}:${input.documentId}`;
+    if (!idempotencyKey.trim()) throw new Error("MailMyPDF submission requires a non-empty idempotency key");
     const communicationInput: CreateDisputeCommunicationInput = {
       document_id: input.documentId,
       recipient: {
@@ -52,10 +53,12 @@ export class MailMyPDFProvider implements MailingProvider {
       idempotency_key: idempotencyKey,
     };
     const communication = await createCommunication(communicationInput);
+    if (!communication.id?.trim()) throw new Error("MailMyPDF returned no provider order ID");
     return { providerOrderId: communication.id };
   }
 
   async getStatus(providerOrderId: string): Promise<MailingStatus> {
+    if (!providerOrderId.trim()) throw new Error("Provider order ID is required");
     const communication = await getCommunication(providerOrderId);
     const updatedAt = typeof communication.updated_at === "string" ? communication.updated_at : new Date().toISOString();
     return {
