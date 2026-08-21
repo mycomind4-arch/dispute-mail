@@ -3,6 +3,7 @@ import { z } from "zod";
 import { uploadDocument } from "@/platform/mailmypdf";
 import { workflows, type WorkflowId } from "@/domain/workflows";
 import { analyzeWithClaudeDocument, draftWithClaude, validateDraftWithClaude } from "./claude-dispute-document";
+import { accountAuthMiddleware } from "@/lib/server-function-auth";
 
 const inputSchema = z.object({
   workflowId: z.string(),
@@ -12,6 +13,7 @@ const inputSchema = z.object({
 });
 
 export const analyzeUploadedWorkflowDocument = createServerFn({ method: "POST" })
+  .middleware([accountAuthMiddleware])
   .handler(async ({ data }: { data: FormData }) => {
     const file = data.get("file");
     if (!(file instanceof File)) throw new Error("A document file is required");
@@ -50,19 +52,12 @@ export const analyzeUploadedWorkflowDocument = createServerFn({ method: "POST" }
       evidenceStatuses: parsed.evidenceStatuses,
     });
 
-    if (analysis.documentId !== stored.id || analysis.classification.type !== workflowId) {
-      throw new Error("Claude returned an analysis for the wrong workflow or stored document");
-    }
+    if (analysis.documentId !== stored.id || analysis.classification.type !== workflowId) throw new Error("Claude returned an analysis for the wrong workflow or stored document");
 
     const requiredEvidenceIds = new Set(analysis.evidence.map((item) => item.id));
     const suppliedEvidenceIds = new Set(Object.keys(parsed.evidenceStatuses));
-    if ([...requiredEvidenceIds].some((id) => !suppliedEvidenceIds.has(id))) {
-      return { document: stored, analysis, draft: null, validation: { passed: false, issues: ["AI analysis did not receive complete evidence-state coverage"] }, blocked: true };
-    }
-
-    if (analysis.blockingIssues.length > 0) {
-      return { document: stored, analysis, draft: null, validation: { passed: false, issues: analysis.blockingIssues }, blocked: true };
-    }
+    if ([...requiredEvidenceIds].some((id) => !suppliedEvidenceIds.has(id))) return { document: stored, analysis, draft: null, validation: { passed: false, issues: ["AI analysis did not receive complete evidence-state coverage"] }, blocked: true };
+    if (analysis.blockingIssues.length > 0) return { document: stored, analysis, draft: null, validation: { passed: false, issues: analysis.blockingIssues }, blocked: true };
 
     const draft = await draftWithClaude({ workflowId, analysis });
     const validation = await validateDraftWithClaude({ workflowId, analysis, draft });
