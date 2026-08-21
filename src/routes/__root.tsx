@@ -1,10 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HeadContent, Outlet, Scripts, createRootRouteWithContext, Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { HeadContent, Outlet, Scripts, createRootRouteWithContext, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useRef, type ReactNode } from "react";
 import { Home, ArrowRight, FileWarning } from "lucide-react";
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { AuthProvider, useAuth } from "@/lib/auth";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
@@ -31,42 +32,43 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <head><HeadContent /></head>
-      <body>{children}<Scripts /></body>
-    </html>
-  );
+  return <html lang="en"><head><HeadContent /></head><body>{children}<Scripts /></body></html>;
 }
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Outlet />
-    </QueryClientProvider>
-  );
+  return <QueryClientProvider client={queryClient}><AuthProvider><CheckoutReturnHandler /><Outlet /></AuthProvider></QueryClientProvider>;
+}
+
+function CheckoutReturnHandler() {
+  const { user, accessToken } = useAuth();
+  const navigate = useNavigate();
+  const processed = useRef(false);
+  useEffect(() => {
+    if (processed.current || !user || !accessToken || typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const checkout = params.get("checkout");
+    const sessionId = params.get("session_id");
+    if (checkout === "cancelled") {
+      processed.current = true;
+      navigate({ to: "/dashboard", search: { mailing: "cancelled" } as never });
+      return;
+    }
+    if (checkout !== "success" || !sessionId) return;
+    processed.current = true;
+    void fetch("/api/mail/response", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ stripeSessionId: sessionId }),
+    }).then(async (response) => {
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload?.error || `Mailing submission failed (${response.status}).`);
+      navigate({ to: "/dashboard", search: { mailing: "success", order: payload.providerOrderId || "" } as never });
+    }).catch((error) => navigate({ to: "/dashboard", search: { mailing: "error", message: error instanceof Error ? error.message : "Mailing submission failed." } as never }));
+  }, [user, accessToken, navigate]);
+  return null;
 }
 
 function NotFoundPage() {
-  return (
-    <main className="min-h-screen bg-cream">
-      <SiteHeader />
-      <section className="py-20 md:py-32">
-        <div className="container max-w-lg text-center">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-teal-50">
-            <FileWarning size={36} className="text-teal-300" />
-          </div>
-          <h1 className="mt-8 text-6xl font-bold text-teal-700" style={{ fontFamily: "var(--font-serif)" }}>404</h1>
-          <h2 className="mt-2 text-xl font-semibold text-teal-600">This item is being disputed elsewhere</h2>
-          <p className="mt-3 text-sm text-slate-400">The page you're looking for doesn't exist or has moved. Let's get you back on track.</p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link to="/" className="btn-primary"><Home size={16} /> Back to home</Link>
-            <Link to="/workflows/credit-report" className="btn-rose">Start a dispute <ArrowRight size={16} /></Link>
-          </div>
-        </div>
-      </section>
-      <SiteFooter />
-    </main>
-  );
+  return <main className="min-h-screen bg-cream"><SiteHeader /><section className="py-20 md:py-32"><div className="container max-w-lg text-center"><div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-teal-50"><FileWarning size={36} className="text-teal-300" /></div><h1 className="mt-8 text-6xl font-bold text-teal-700" style={{ fontFamily: "var(--font-serif)" }}>404</h1><h2 className="mt-2 text-xl font-semibold text-teal-600">This item is being disputed elsewhere</h2><p className="mt-3 text-sm text-slate-400">The page you're looking for doesn't exist or has moved. Let's get you back on track.</p><div className="mt-8 flex flex-wrap justify-center gap-3"><Link to="/" className="btn-primary"><Home size={16} /> Back to home</Link><Link to="/workflows/credit-report" className="btn-rose">Start a dispute <ArrowRight size={16} /></Link></div></div></section><SiteFooter /></main>;
 }
