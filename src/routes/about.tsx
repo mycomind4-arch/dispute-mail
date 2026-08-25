@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { FileWarning, Sparkles, Mail, ShieldCheck, ArrowRight, FileCheck } from "lucide-react";
+import { ShieldAlert, Sparkles, Mail, ShieldCheck, ArrowRight, FileCheck } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 export const Route = createFileRoute("/about")({
@@ -12,9 +12,9 @@ export const Route = createFileRoute("/about")({
 function AboutPage() {
   return (
     <main className="min-h-screen bg-cream"><SiteHeader />
-      <section style={{ background: "linear-gradient(135deg, #0f766e 0%, #134e4a 100%)" }} className="py-16 md:py-24">
+      <section style={{ background: "linear-gradient(135deg, #2a2d3f 0%, #1a1d2e 100%)" }} className="py-16 md:py-24">
         <div className="container max-w-2xl text-center">
-          <div className="badge badge-rose mb-4" style={{ background: "rgba(244,63,94,.15)", color: "#fb7185" }}>About Dispute Mail</div>
+          <div className="badge badge-rose mb-4" style={{ background: "color-mix(in oklab, var(--stamp) 12%, transparent)", color: "var(--stamp)" }}>About Dispute Mail</div>
           <h1 className="text-4xl font-bold text-white md:text-5xl" style={{ fontFamily: "var(--font-serif)" }}>Every error deserves a response.</h1>
           <p className="mt-5 text-lg leading-8 text-white/60">We believe everyone deserves a clear, professional tool for disputing credit errors, debt collections, and billing issues — without confusion, without guesswork, and without a printer.</p>
         </div>
@@ -37,7 +37,7 @@ function AboutPage() {
         <p className="mt-4 text-sm leading-7 text-slate-400">Dispute Mail is a standalone product built on the MailMyPDF mailing platform, which handles printing, enveloping, USPS delivery, tracking, and proof of delivery.</p>
         <div className="mt-6 flex items-center gap-4 rounded-xl border border-warm-border bg-white p-5"><div className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-50"><FileCheck size={22} className="text-teal-700" /></div><div><p className="font-semibold text-teal-700">MailMyPDF</p><p className="text-sm text-slate-400">The mailing infrastructure behind Dispute Mail</p></div></div>
       </div></section>
-      <section style={{ background: "linear-gradient(135deg, #0f766e 0%, #134e4a 100%)" }} className="py-16"><div className="container text-center"><h2 className="text-2xl font-bold text-white" style={{ fontFamily: "var(--font-serif)" }}>Ready to dispute?</h2><p className="mx-auto mt-3 max-w-md text-white/60">Prepare and send your dispute today.</p><Link to="/workflows/credit-report" className="btn-rose mt-6 text-base">Start now <ArrowRight size={18} /></Link></div></section>
+      <section style={{ background: "linear-gradient(135deg, #2a2d3f 0%, #1a1d2e 100%)" }} className="py-16"><div className="container text-center"><h2 className="text-2xl font-bold text-white" style={{ fontFamily: "var(--font-serif)" }}>Ready to dispute?</h2><p className="mx-auto mt-3 max-w-md text-white/60">Prepare and send your dispute today.</p><Link to="/workflows/credit-report" className="btn-rose mt-6 text-base">Start now <ArrowRight size={18} /></Link></div></section>
       <SiteFooter />
     </main>
   );

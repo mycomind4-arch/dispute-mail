@@ -27,7 +27,7 @@ function GuidePage() {
           <h1 className="mt-3 text-3xl font-bold text-teal-700 md:text-4xl" style={{ fontFamily: "var(--font-serif)" }}>{guide.title}</h1>
         </div></section>
         <section className="py-10 md:py-14"><div className="container max-w-2xl prose-content">{guide.content}</div></section>
-        <section style={{ background: "linear-gradient(135deg, #0f766e 0%, #134e4a 100%)" }} className="py-12"><div className="container max-w-2xl text-center"><h2 className="text-2xl font-bold text-white" style={{ fontFamily: "var(--font-serif)" }}>Ready to dispute?</h2><p className="mt-3 text-white/60">Start a guided workflow and get your dispute in the mail today.</p><Link to="/workflows/credit-report" className="btn-rose mt-6">Start now</Link></div></section>
+        <section style={{ background: "linear-gradient(135deg, #2a2d3f 0%, #1a1d2e 100%)" }} className="py-12"><div className="container max-w-2xl text-center"><h2 className="text-2xl font-bold text-white" style={{ fontFamily: "var(--font-serif)" }}>Ready to dispute?</h2><p className="mt-3 text-white/60">Start a guided workflow and get your dispute in the mail today.</p><Link to="/workflows/credit-report" className="btn-rose mt-6">Start now</Link></div></section>
       </article>
       <SiteFooter />
     </main>

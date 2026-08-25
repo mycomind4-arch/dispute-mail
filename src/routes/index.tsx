@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, FileWarning, Mail, ShieldCheck, Sparkles, Clock, PackageCheck, Lock, FileUp, ChevronDown, Send, Eye, Stamp, CreditCard, FileText, TrendingUp, Quote } from "lucide-react";
+import { ArrowRight, CheckCircle2, ShieldAlert, Mail, ShieldCheck, Sparkles, Clock, PackageCheck, Lock, FileUp, ChevronDown, Send, Eye, Stamp, CreditCard, FileText, TrendingUp, Quote } from "lucide-react";
 import { useState } from "react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -10,11 +10,11 @@ const workflows = [
   { title: "Dispute a Credit Report Error", description: "Dispute inaccurate items on your credit report with Equifax, Experian, or TransUnion under the FCRA.", icon: FileText, href: "/workflows/credit-report" },
   { title: "Request Debt Validation", description: "Request validation of a debt from a collector under the FDCPA within 30 days of first contact.", icon: ShieldCheck, href: "/workflows/debt-validation" },
   { title: "Dispute a Billing Error", description: "Dispute a medical billing error, utility overcharge, or incorrect service charge with the provider.", icon: CreditCard, href: "/workflows/billing-error" },
-  { title: "Dispute an Unauthorized Charge", description: "Dispute an unauthorized or fraudulent charge with your card issuer or bank in writing.", icon: FileWarning, href: "/workflows/unauthorized-charge" },
+  { title: "Dispute an Unauthorized Charge", description: "Dispute an unauthorized or fraudulent charge with your card issuer or bank in writing.", icon: ShieldAlert, href: "/workflows/unauthorized-charge" },
 ];
 
 const features = [
-  { icon: FileWarning, title: "Guided dispute workflows", desc: "Start with the error, not a blank page. Each workflow walks you through the steps from issue to mailed dispute." },
+  { icon: ShieldAlert, title: "Guided dispute workflows", desc: "Start with the error, not a blank page. Each workflow walks you through the steps from issue to mailed dispute." },
   { icon: Sparkles, title: "AI-assisted drafting", desc: "Organize your facts into a professional dispute letter. Everything is editable. The AI never invents facts or legal conclusions." },
   { icon: Send, title: "Physical mail with tracking", desc: "Your dispute is printed, enveloped, and mailed via USPS. Track delivery and keep proof of timely submission." },
   { icon: ShieldCheck, title: "Proof of delivery", desc: "Certified mail options include signature tracking and return receipt — your record that the dispute was received." },
@@ -67,12 +67,12 @@ function HomePage() {
       <SiteHeader variant="transparent" />
 
       {/* Hero */}
-      <section className="relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0f766e 0%, #134e4a 60%, #042f2e 100%)" }}>
+      <section className="relative overflow-hidden" style={{ background: "linear-gradient(135deg, #2a2d3f 0%, #1a1d2e 60%, #0f1119 100%)" }}>
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f43f5e' fill-opacity='0.12'%3E%3Cpath d='M30 12l-6 6h12l-6-6zm0 24l-6-6h12l-6 6zM12 30l6-6v12l-6-6zm36 0l-6-6v12l6-6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }} />
         <div className="container relative py-20 md:py-28">
           <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_.9fr]">
             <div>
-              <div className="badge badge-rose mb-5" style={{ background: "rgba(244,63,94,.15)", color: "#fb7185" }}>Stand your ground</div>
+              <div className="badge badge-rose mb-5" style={{ background: "color-mix(in oklab, var(--stamp) 12%, transparent)", color: "var(--stamp)" }}>Stand your ground</div>
               <h1 className="text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl" style={{ fontFamily: "var(--font-serif)" }}>
                 Dispute the error. Keep the proof.
               </h1>
@@ -95,7 +95,7 @@ function HomePage() {
               <div className="card relative p-6 shadow-2xl">
                 <div className="flex items-center gap-3 border-b border-warm-border pb-4">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-teal-700">
-                    <FileWarning size={20} className="text-rose-400" />
+                    <ShieldAlert size={20} className="text-stamp-soft" />
                   </div>
                   <div>
                     <p className="font-semibold text-teal-700" style={{ fontFamily: "var(--font-serif)" }}>Your dispute workflow</p>
@@ -111,16 +111,16 @@ function HomePage() {
                   ].map(({ icon: Icon, text, done }) => (
                     <div key={text} className="flex items-center gap-3 text-sm">
                       <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${done ? "bg-rose-50" : "bg-gray-100"}`}>
-                        <Icon size={15} className={done ? "text-rose-500" : "text-gray-400"} />
+                        <Icon size={15} className={done ? "text-stamp" : "text-gray-400"} />
                       </div>
                       <span className={done ? "text-teal-700" : "text-slate-400"}>{text}</span>
-                      {done && <CheckCircle2 size={15} className="ml-auto text-rose-500" />}
+                      {done && <CheckCircle2 size={15} className="ml-auto text-stamp" />}
                     </div>
                   ))}
                 </div>
                 <div className="mt-5 flex items-center justify-between rounded-xl bg-teal-50 px-4 py-3">
                   <div className="flex items-center gap-2 text-sm text-teal-600">
-                    <PackageCheck size={16} className="text-rose-500" />
+                    <PackageCheck size={16} className="text-stamp" />
                     <span>Proof of timely submission</span>
                   </div>
                   <span className="badge badge-green">Ready</span>
@@ -156,7 +156,7 @@ function HomePage() {
             { icon: Eye, text: "You review before anything is sent" },
           ].map(({ icon: Icon, text }) => (
             <div key={text} className="flex items-center gap-2">
-              <Icon size={16} className="text-rose-500" /> {text}
+              <Icon size={16} className="text-stamp" /> {text}
             </div>
           ))}
         </div>
@@ -224,7 +224,7 @@ function HomePage() {
             {features.map(({ icon: Icon, title, desc }) => (
               <div key={title} className="card p-6">
                 <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-rose-50">
-                  <Icon size={22} className="text-rose-500" />
+                  <Icon size={22} className="text-stamp" />
                 </div>
                 <h3 className="mt-4 font-semibold text-teal-700" style={{ fontFamily: "var(--font-serif)" }}>{title}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-400">{desc}</p>
@@ -255,7 +255,7 @@ function HomePage() {
                   <tr key={feature} className="hover:bg-cream/50">
                     <td className="px-5 py-3.5 text-slate-500 font-medium">{feature}</td>
                     <td className="px-5 py-3.5 text-center">
-                      {us === true ? <CheckCircle2 size={18} className="mx-auto text-rose-500" /> : <span className="text-slate-400">{us}</span>}
+                      {us === true ? <CheckCircle2 size={18} className="mx-auto text-stamp" /> : <span className="text-slate-400">{us}</span>}
                     </td>
                     <td className="px-5 py-3.5 text-center">
                       {them === false ? <span className="text-slate-300">—</span> : <span className="text-slate-400">{them}</span>}
@@ -329,17 +329,17 @@ function HomePage() {
         <div className="container">
           <div className="grid gap-8 md:grid-cols-3">
             <div className="card p-6">
-              <Lock size={24} className="text-rose-500" />
+              <Lock size={24} className="text-stamp" />
               <h2 className="mt-4 text-lg font-semibold text-teal-700" style={{ fontFamily: "var(--font-serif)" }}>Your facts stay yours</h2>
               <p className="mt-2 text-sm leading-6 text-slate-400">AI assists with organization and drafting. It will never invent facts or legal conclusions. Your documents are encrypted and never shared.</p>
             </div>
             <div className="card p-6">
-              <Clock size={24} className="text-rose-500" />
+              <Clock size={24} className="text-stamp" />
               <h2 className="mt-4 text-lg font-semibold text-teal-700" style={{ fontFamily: "var(--font-serif)" }}>Deadlines matter</h2>
               <p className="mt-2 text-sm leading-6 text-slate-400">Credit disputes have 30–45 day investigation windows. Debt validation has a 30-day response window. Certified mail with return receipt proves you submitted on time.</p>
             </div>
             <div className="card p-6">
-              <FileWarning size={24} className="text-rose-500" />
+              <ShieldAlert size={24} className="text-stamp" />
               <h2 className="mt-4 text-lg font-semibold text-teal-700" style={{ fontFamily: "var(--font-serif)" }}>Know what we're not</h2>
               <p className="mt-2 text-sm leading-6 text-slate-400">Dispute Mail is not a law firm and does not provide legal advice. If your dispute involves complex legal questions, consult a qualified attorney.</p>
             </div>
@@ -366,7 +366,7 @@ function HomePage() {
       </section>
 
       {/* CTA */}
-      <section style={{ background: "linear-gradient(135deg, #0f766e 0%, #134e4a 100%)" }} className="py-16 md:py-20">
+      <section style={{ background: "linear-gradient(135deg, #2a2d3f 0%, #1a1d2e 100%)" }} className="py-16 md:py-20">
         <div className="container text-center">
           <h2 className="text-3xl font-bold text-white md:text-4xl" style={{ fontFamily: "var(--font-serif)" }}>Ready to dispute?</h2>
           <p className="mx-auto mt-4 max-w-lg text-white/60">Start a guided workflow, review your draft, and mail it — all in one place.</p>
