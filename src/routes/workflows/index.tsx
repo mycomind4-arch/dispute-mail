@@ -8,8 +8,8 @@ import { workflows } from "@/domain/workflows";
 export const Route = createFileRoute("/workflows/")({ component: WorkflowDirectory });
 
 const groups = [
-  { title: "Debt & collection disputes", ids: ["debt-collection-dispute", "dispute-collection-agency", "debt-dispute", "debt-validation", "medical-collections", "cease-contact"] },
-  { title: "Credit report disputes", ids: ["credit-report", "credit-report-collections", "hard-inquiry", "charge-off", "student-loan"] },
+  { title: "Debt & collection disputes", ids: ["debt-collection-dispute", "dispute-collection-agency", "debt-dispute", "debt-validation", "medical-collections", "cease-contact", "fdcpa-dispute", "debt-lawsuit-response"] },
+  { title: "Credit report disputes", ids: ["credit-report", "credit-report-collections", "hard-inquiry", "charge-off", "student-loan", "transunion-dispute", "experian-dispute", "equifax-dispute", "lexisnexis-dispute", "fcra-dispute"] },
   { title: "Billing & transaction disputes", ids: ["credit-card-billing", "unauthorized-charge", "billing-error", "subscription-billing", "service-contract", "insurance-billing"] },
   { title: "Follow-up & escalation", ids: ["follow-up-no-response", "inadequate-response"] },
 ] as const;
