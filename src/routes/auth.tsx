@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { FileWarning, ArrowRight, CheckCircle2 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
@@ -17,7 +17,8 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const { user, loading, signIn, signUp: createAccount, signInWithMagicLink, resetPassword } = useAuth();
   const navigate = useNavigate();
-  useEffect(() => { if (!loading && user) navigate({ to: "/dashboard" }); }, [loading, user, navigate]);
+  const searchParams = useSearch({ from: "/auth" }) as { returnTo?: string };
+  useEffect(() => { if (!loading && user) navigate({ to: (searchParams?.returnTo || "/dashboard") as "/dashboard" }); }, [loading, user, navigate]);
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault(); setError(null); setNotice(null);
@@ -30,10 +31,10 @@ function AuthPage() {
         if (result.error) setError(result.error); else setNotice("Check your email for a secure sign-in link.");
       } else if (signUp) {
         const result = await createAccount(email.trim(), password);
-        if (result.error) setError(result.error); else if (result.needsConfirmation) setNotice("Check your email to confirm the account before signing in."); else navigate({ to: "/dashboard" });
+        if (result.error) setError(result.error); else if (result.needsConfirmation) setNotice("Check your email to confirm the account before signing in."); else navigate({ to: (searchParams?.returnTo || "/dashboard") as "/dashboard" });
       } else {
         const result = await signIn(email.trim(), password);
-        if (result.error) setError(result.error); else navigate({ to: "/dashboard" });
+        if (result.error) setError(result.error); else navigate({ to: (searchParams?.returnTo || "/dashboard") as "/dashboard" });
       }
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Authentication failed."); }
     finally { setBusy(false); }

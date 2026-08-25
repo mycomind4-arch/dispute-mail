@@ -62,3 +62,6 @@ export async function analyzeWithClaudeDocument(input: {
   if (!text) throw new Error("Claude returned no analysis text for the uploaded document");
   return disputeAnalysisSchema.parse(parseJsonObject(text));
 }
+
+// Re-export for compatibility — these live in claude-dispute.ts
+export { draftWithClaude, validateDraftWithClaude } from "./claude-dispute";

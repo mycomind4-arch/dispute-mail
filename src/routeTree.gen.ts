@@ -11,21 +11,27 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as MailAPdfRouteImport } from './routes/mail-a-pdf'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as StartRouteImport } from './routes/start'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WriteADisputeLetterRouteImport } from './routes/write-a-dispute-letter'
 import { Route as ResourcesIndexRouteImport } from './routes/resources/index'
 import { Route as ResourcesSlugRouteImport } from './routes/resources/$slug'
 import { Route as WorkflowsIndexRouteImport } from './routes/workflows/index'
-import { Route as WorkflowsBillingErrorRouteImport } from './routes/workflows/billing-error'
-import { Route as WorkflowsCreditReportRouteImport } from './routes/workflows/credit-report'
-import { Route as WorkflowsDebtValidationRouteImport } from './routes/workflows/debt-validation'
-import { Route as WorkflowsUnauthorizedChargeRouteImport } from './routes/workflows/unauthorized-charge'
+import { Route as WorkflowsWorkflowIdRouteImport } from './routes/workflows/$workflowId'
+import { Route as WorkflowsWorkflowIdStartRouteImport } from './routes/workflows/$workflowId/start'
+import { Route as ApiWorkflowsWorkflowIdAnalyzeRouteImport } from './routes/api/workflows/$workflowId/analyze'
+import { Route as ApiWorkflowsWorkflowIdClaudeRouteImport } from './routes/api/workflows/$workflowId/claude'
+import { Route as ApiWorkflowsWorkflowIdDocumentRouteImport } from './routes/api/workflows/$workflowId/document'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -35,6 +41,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -57,6 +68,16 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MailAPdfRoute = MailAPdfRouteImport.update({
+  id: '/mail-a-pdf',
+  path: '/mail-a-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
@@ -65,6 +86,16 @@ const PricingRoute = PricingRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StartRoute = StartRouteImport.update({
+  id: '/start',
+  path: '/start',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -92,164 +123,213 @@ const WorkflowsIndexRoute = WorkflowsIndexRouteImport.update({
   path: '/workflows/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WorkflowsBillingErrorRoute = WorkflowsBillingErrorRouteImport.update({
-  id: '/workflows/billing-error',
-  path: '/workflows/billing-error',
+const WorkflowsWorkflowIdRoute = WorkflowsWorkflowIdRouteImport.update({
+  id: '/workflows/$workflowId',
+  path: '/workflows/$workflowId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WorkflowsCreditReportRoute = WorkflowsCreditReportRouteImport.update({
-  id: '/workflows/credit-report',
-  path: '/workflows/credit-report',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WorkflowsDebtValidationRoute = WorkflowsDebtValidationRouteImport.update({
-  id: '/workflows/debt-validation',
-  path: '/workflows/debt-validation',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WorkflowsUnauthorizedChargeRoute =
-  WorkflowsUnauthorizedChargeRouteImport.update({
-    id: '/workflows/unauthorized-charge',
-    path: '/workflows/unauthorized-charge',
+const WorkflowsWorkflowIdStartRoute =
+  WorkflowsWorkflowIdStartRouteImport.update({
+    id: '/start',
+    path: '/start',
+    getParentRoute: () => WorkflowsWorkflowIdRoute,
+  } as any)
+const ApiWorkflowsWorkflowIdAnalyzeRoute =
+  ApiWorkflowsWorkflowIdAnalyzeRouteImport.update({
+    id: '/api/workflows/$workflowId/analyze',
+    path: '/api/workflows/$workflowId/analyze',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiWorkflowsWorkflowIdClaudeRoute =
+  ApiWorkflowsWorkflowIdClaudeRouteImport.update({
+    id: '/api/workflows/$workflowId/claude',
+    path: '/api/workflows/$workflowId/claude',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiWorkflowsWorkflowIdDocumentRoute =
+  ApiWorkflowsWorkflowIdDocumentRouteImport.update({
+    id: '/api/workflows/$workflowId/document',
+    path: '/api/workflows/$workflowId/document',
     getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/mail-a-pdf': typeof MailAPdfRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/products': typeof ProductsRoute
+  '/start': typeof StartRoute
   '/terms': typeof TermsRoute
   '/write-a-dispute-letter': typeof WriteADisputeLetterRoute
   '/resources/$slug': typeof ResourcesSlugRoute
-  '/workflows/billing-error': typeof WorkflowsBillingErrorRoute
-  '/workflows/credit-report': typeof WorkflowsCreditReportRoute
-  '/workflows/debt-validation': typeof WorkflowsDebtValidationRoute
-  '/workflows/unauthorized-charge': typeof WorkflowsUnauthorizedChargeRoute
+  '/workflows/$workflowId': typeof WorkflowsWorkflowIdRouteWithChildren
   '/resources/': typeof ResourcesIndexRoute
   '/workflows/': typeof WorkflowsIndexRoute
+  '/workflows/$workflowId/start': typeof WorkflowsWorkflowIdStartRoute
+  '/api/workflows/$workflowId/analyze': typeof ApiWorkflowsWorkflowIdAnalyzeRoute
+  '/api/workflows/$workflowId/claude': typeof ApiWorkflowsWorkflowIdClaudeRoute
+  '/api/workflows/$workflowId/document': typeof ApiWorkflowsWorkflowIdDocumentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/mail-a-pdf': typeof MailAPdfRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/products': typeof ProductsRoute
+  '/start': typeof StartRoute
   '/terms': typeof TermsRoute
   '/write-a-dispute-letter': typeof WriteADisputeLetterRoute
   '/resources/$slug': typeof ResourcesSlugRoute
-  '/workflows/billing-error': typeof WorkflowsBillingErrorRoute
-  '/workflows/credit-report': typeof WorkflowsCreditReportRoute
-  '/workflows/debt-validation': typeof WorkflowsDebtValidationRoute
-  '/workflows/unauthorized-charge': typeof WorkflowsUnauthorizedChargeRoute
+  '/workflows/$workflowId': typeof WorkflowsWorkflowIdRouteWithChildren
   '/resources': typeof ResourcesIndexRoute
   '/workflows': typeof WorkflowsIndexRoute
+  '/workflows/$workflowId/start': typeof WorkflowsWorkflowIdStartRoute
+  '/api/workflows/$workflowId/analyze': typeof ApiWorkflowsWorkflowIdAnalyzeRoute
+  '/api/workflows/$workflowId/claude': typeof ApiWorkflowsWorkflowIdClaudeRoute
+  '/api/workflows/$workflowId/document': typeof ApiWorkflowsWorkflowIdDocumentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/mail-a-pdf': typeof MailAPdfRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/products': typeof ProductsRoute
+  '/start': typeof StartRoute
   '/terms': typeof TermsRoute
   '/write-a-dispute-letter': typeof WriteADisputeLetterRoute
   '/resources/$slug': typeof ResourcesSlugRoute
-  '/workflows/billing-error': typeof WorkflowsBillingErrorRoute
-  '/workflows/credit-report': typeof WorkflowsCreditReportRoute
-  '/workflows/debt-validation': typeof WorkflowsDebtValidationRoute
-  '/workflows/unauthorized-charge': typeof WorkflowsUnauthorizedChargeRoute
+  '/workflows/$workflowId': typeof WorkflowsWorkflowIdRouteWithChildren
   '/resources/': typeof ResourcesIndexRoute
   '/workflows/': typeof WorkflowsIndexRoute
+  '/workflows/$workflowId/start': typeof WorkflowsWorkflowIdStartRoute
+  '/api/workflows/$workflowId/analyze': typeof ApiWorkflowsWorkflowIdAnalyzeRoute
+  '/api/workflows/$workflowId/claude': typeof ApiWorkflowsWorkflowIdClaudeRoute
+  '/api/workflows/$workflowId/document': typeof ApiWorkflowsWorkflowIdDocumentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/account'
     | '/auth'
     | '/contact'
     | '/dashboard'
     | '/faq'
+    | '/how-it-works'
+    | '/mail-a-pdf'
     | '/pricing'
     | '/privacy'
+    | '/products'
+    | '/start'
     | '/terms'
     | '/write-a-dispute-letter'
     | '/resources/$slug'
-    | '/workflows/billing-error'
-    | '/workflows/credit-report'
-    | '/workflows/debt-validation'
-    | '/workflows/unauthorized-charge'
+    | '/workflows/$workflowId'
     | '/resources/'
     | '/workflows/'
+    | '/workflows/$workflowId/start'
+    | '/api/workflows/$workflowId/analyze'
+    | '/api/workflows/$workflowId/claude'
+    | '/api/workflows/$workflowId/document'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/account'
     | '/auth'
     | '/contact'
     | '/dashboard'
     | '/faq'
+    | '/how-it-works'
+    | '/mail-a-pdf'
     | '/pricing'
     | '/privacy'
+    | '/products'
+    | '/start'
     | '/terms'
     | '/write-a-dispute-letter'
     | '/resources/$slug'
-    | '/workflows/billing-error'
-    | '/workflows/credit-report'
-    | '/workflows/debt-validation'
-    | '/workflows/unauthorized-charge'
+    | '/workflows/$workflowId'
     | '/resources'
     | '/workflows'
+    | '/workflows/$workflowId/start'
+    | '/api/workflows/$workflowId/analyze'
+    | '/api/workflows/$workflowId/claude'
+    | '/api/workflows/$workflowId/document'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/account'
     | '/auth'
     | '/contact'
     | '/dashboard'
     | '/faq'
+    | '/how-it-works'
+    | '/mail-a-pdf'
     | '/pricing'
     | '/privacy'
+    | '/products'
+    | '/start'
     | '/terms'
     | '/write-a-dispute-letter'
     | '/resources/$slug'
-    | '/workflows/billing-error'
-    | '/workflows/credit-report'
-    | '/workflows/debt-validation'
-    | '/workflows/unauthorized-charge'
+    | '/workflows/$workflowId'
     | '/resources/'
     | '/workflows/'
+    | '/workflows/$workflowId/start'
+    | '/api/workflows/$workflowId/analyze'
+    | '/api/workflows/$workflowId/claude'
+    | '/api/workflows/$workflowId/document'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AccountRoute: typeof AccountRoute
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRoute
   FaqRoute: typeof FaqRoute
+  HowItWorksRoute: typeof HowItWorksRoute
+  MailAPdfRoute: typeof MailAPdfRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
+  ProductsRoute: typeof ProductsRoute
+  StartRoute: typeof StartRoute
   TermsRoute: typeof TermsRoute
   WriteADisputeLetterRoute: typeof WriteADisputeLetterRoute
   ResourcesSlugRoute: typeof ResourcesSlugRoute
-  WorkflowsBillingErrorRoute: typeof WorkflowsBillingErrorRoute
-  WorkflowsCreditReportRoute: typeof WorkflowsCreditReportRoute
-  WorkflowsDebtValidationRoute: typeof WorkflowsDebtValidationRoute
-  WorkflowsUnauthorizedChargeRoute: typeof WorkflowsUnauthorizedChargeRoute
+  WorkflowsWorkflowIdRoute: typeof WorkflowsWorkflowIdRouteWithChildren
   ResourcesIndexRoute: typeof ResourcesIndexRoute
   WorkflowsIndexRoute: typeof WorkflowsIndexRoute
+  ApiWorkflowsWorkflowIdAnalyzeRoute: typeof ApiWorkflowsWorkflowIdAnalyzeRoute
+  ApiWorkflowsWorkflowIdClaudeRoute: typeof ApiWorkflowsWorkflowIdClaudeRoute
+  ApiWorkflowsWorkflowIdDocumentRoute: typeof ApiWorkflowsWorkflowIdDocumentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -266,6 +346,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -296,6 +383,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mail-a-pdf': {
+      id: '/mail-a-pdf'
+      path: '/mail-a-pdf'
+      fullPath: '/mail-a-pdf'
+      preLoaderRoute: typeof MailAPdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
@@ -308,6 +409,20 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/start': {
+      id: '/start'
+      path: '/start'
+      fullPath: '/start'
+      preLoaderRoute: typeof StartRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -345,55 +460,78 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkflowsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/workflows/billing-error': {
-      id: '/workflows/billing-error'
-      path: '/workflows/billing-error'
-      fullPath: '/workflows/billing-error'
-      preLoaderRoute: typeof WorkflowsBillingErrorRouteImport
+    '/workflows/$workflowId': {
+      id: '/workflows/$workflowId'
+      path: '/workflows/$workflowId'
+      fullPath: '/workflows/$workflowId'
+      preLoaderRoute: typeof WorkflowsWorkflowIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/workflows/credit-report': {
-      id: '/workflows/credit-report'
-      path: '/workflows/credit-report'
-      fullPath: '/workflows/credit-report'
-      preLoaderRoute: typeof WorkflowsCreditReportRouteImport
+    '/workflows/$workflowId/start': {
+      id: '/workflows/$workflowId/start'
+      path: '/start'
+      fullPath: '/workflows/$workflowId/start'
+      preLoaderRoute: typeof WorkflowsWorkflowIdStartRouteImport
+      parentRoute: typeof WorkflowsWorkflowIdRoute
+    }
+    '/api/workflows/$workflowId/analyze': {
+      id: '/api/workflows/$workflowId/analyze'
+      path: '/api/workflows/$workflowId/analyze'
+      fullPath: '/api/workflows/$workflowId/analyze'
+      preLoaderRoute: typeof ApiWorkflowsWorkflowIdAnalyzeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/workflows/debt-validation': {
-      id: '/workflows/debt-validation'
-      path: '/workflows/debt-validation'
-      fullPath: '/workflows/debt-validation'
-      preLoaderRoute: typeof WorkflowsDebtValidationRouteImport
+    '/api/workflows/$workflowId/claude': {
+      id: '/api/workflows/$workflowId/claude'
+      path: '/api/workflows/$workflowId/claude'
+      fullPath: '/api/workflows/$workflowId/claude'
+      preLoaderRoute: typeof ApiWorkflowsWorkflowIdClaudeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/workflows/unauthorized-charge': {
-      id: '/workflows/unauthorized-charge'
-      path: '/workflows/unauthorized-charge'
-      fullPath: '/workflows/unauthorized-charge'
-      preLoaderRoute: typeof WorkflowsUnauthorizedChargeRouteImport
+    '/api/workflows/$workflowId/document': {
+      id: '/api/workflows/$workflowId/document'
+      path: '/api/workflows/$workflowId/document'
+      fullPath: '/api/workflows/$workflowId/document'
+      preLoaderRoute: typeof ApiWorkflowsWorkflowIdDocumentRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
+interface WorkflowsWorkflowIdRouteChildren {
+  WorkflowsWorkflowIdStartRoute: typeof WorkflowsWorkflowIdStartRoute
+}
+
+const WorkflowsWorkflowIdRouteChildren: WorkflowsWorkflowIdRouteChildren = {
+  WorkflowsWorkflowIdStartRoute: WorkflowsWorkflowIdStartRoute,
+}
+
+const WorkflowsWorkflowIdRouteWithChildren =
+  WorkflowsWorkflowIdRoute._addFileChildren(WorkflowsWorkflowIdRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AccountRoute: AccountRoute,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRoute,
   FaqRoute: FaqRoute,
+  HowItWorksRoute: HowItWorksRoute,
+  MailAPdfRoute: MailAPdfRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
+  ProductsRoute: ProductsRoute,
+  StartRoute: StartRoute,
   TermsRoute: TermsRoute,
   WriteADisputeLetterRoute: WriteADisputeLetterRoute,
   ResourcesSlugRoute: ResourcesSlugRoute,
-  WorkflowsBillingErrorRoute: WorkflowsBillingErrorRoute,
-  WorkflowsCreditReportRoute: WorkflowsCreditReportRoute,
-  WorkflowsDebtValidationRoute: WorkflowsDebtValidationRoute,
-  WorkflowsUnauthorizedChargeRoute: WorkflowsUnauthorizedChargeRoute,
+  WorkflowsWorkflowIdRoute: WorkflowsWorkflowIdRouteWithChildren,
   ResourcesIndexRoute: ResourcesIndexRoute,
   WorkflowsIndexRoute: WorkflowsIndexRoute,
+  ApiWorkflowsWorkflowIdAnalyzeRoute: ApiWorkflowsWorkflowIdAnalyzeRoute,
+  ApiWorkflowsWorkflowIdClaudeRoute: ApiWorkflowsWorkflowIdClaudeRoute,
+  ApiWorkflowsWorkflowIdDocumentRoute: ApiWorkflowsWorkflowIdDocumentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
