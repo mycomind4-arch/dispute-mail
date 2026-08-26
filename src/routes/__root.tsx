@@ -7,6 +7,8 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { AuthProvider, useAuth } from "@/lib/auth";
 
+const SITE_ORIGIN = "https://mycomind4-arch-dispute-mail.pages.dev";
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -20,14 +22,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Prepare, review, send, track, and keep a record of your dispute letters." },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Dispute Mail" },
+      { property: "og:url", content: SITE_ORIGIN + "/" },
+      // TODO: Create /og-image.png (1200x630) — no OG image asset exists yet
+      { property: "og:image", content: SITE_ORIGIN + "/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Dispute Mail — Prepare and send dispute letters" },
       { name: "twitter:description", content: "Guided workflows, physical mail with tracking, and proof of delivery." },
+      { name: "twitter:image", content: SITE_ORIGIN + "/og-image.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" },
+      { rel: "canonical", href: SITE_ORIGIN + "/" },
       { rel: "stylesheet", href: appCss },
     ],
   }),

@@ -5,7 +5,58 @@ import { SiteFooter } from "@/components/site-footer";
 import { workflowProfiles } from "@/domain/workflow-profiles";
 import { workflows } from "@/domain/workflows";
 
-export const Route = createFileRoute("/workflows/")({ component: WorkflowDirectory });
+const SITE_ORIGIN = "https://mycomind4-arch-dispute-mail.pages.dev";
+
+export const Route = createFileRoute("/workflows/")({
+  head: () => ({
+    meta: [
+      { title: "Dispute Workflows | Credit, Debt & Billing | Dispute Mail" },
+      { name: "description", content: "Browse all Dispute Mail workflows for credit report disputes, debt validation, billing errors, unauthorized charges, and follow-up escalations." },
+      { property: "og:title", content: "Dispute Workflows | Credit, Debt & Billing | Dispute Mail" },
+      { property: "og:description", content: "Browse all Dispute Mail workflows for credit report disputes, debt validation, billing errors, and unauthorized charges." },
+      { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Dispute Mail" },
+      { property: "og:url", content: "https://mycomind4-arch-dispute-mail.pages.dev/workflows" },
+      // TODO: Create /og-image.png (1200x630) — no OG image asset exists yet
+      { property: "og:image", content: "https://mycomind4-arch-dispute-mail.pages.dev/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Dispute Workflows | Dispute Mail" },
+      { name: "twitter:description", content: "Browse all Dispute Mail workflows for credit report disputes, debt validation, billing errors, and unauthorized charges." },
+      { name: "twitter:image", content: "https://mycomind4-arch-dispute-mail.pages.dev/og-image.png" },
+    ],
+    links: [{ rel: "canonical", href: "https://mycomind4-arch-dispute-mail.pages.dev/workflows" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Dispute Mail Workflows",
+          itemListElement: groups.flatMap((g) => g.ids).map((id, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: workflows[id as keyof typeof workflows]?.title ?? id,
+            url: SITE_ORIGIN + "/workflows/" + id,
+          })),
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://mycomind4-arch-dispute-mail.pages.dev/" },
+            { "@type": "ListItem", position: 2, name: "Workflows", item: "https://mycomind4-arch-dispute-mail.pages.dev/workflows" },
+          ],
+        }),
+      },
+    ],
+  }),
+  component: WorkflowDirectory,
+});
 
 const groups = [
   { title: "Debt & collection disputes", ids: ["debt-collection-dispute", "dispute-collection-agency", "debt-dispute", "debt-validation", "medical-collections", "cease-contact", "fdcpa-dispute", "debt-lawsuit-response"] },

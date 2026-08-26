@@ -4,7 +4,49 @@ import { useState } from "react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
-export const Route = createFileRoute("/")({ component: HomePage });
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Dispute Mail — Dispute credit errors, debt & billing by mail" },
+      { name: "description", content: "Guided workflows to prepare, review, send, and track dispute letters for credit report errors, debt validation, billing errors, and unauthorized charges. Physical mail with proof of delivery." },
+      { property: "og:title", content: "Dispute Mail — Dispute credit errors, debt & billing by mail" },
+      { property: "og:description", content: "Prepare, review, send, track, and keep a record of your dispute letters. Certified mail with proof of delivery." },
+      { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Dispute Mail" },
+      { property: "og:url", content: "https://mycomind4-arch-dispute-mail.pages.dev/" },
+      // TODO: Create /og-image.png (1200x630) — no OG image asset exists yet
+      { property: "og:image", content: "https://mycomind4-arch-dispute-mail.pages.dev/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Dispute Mail — Dispute credit errors, debt & billing by mail" },
+      { name: "twitter:description", content: "Guided workflows, physical mail with tracking, and proof of delivery." },
+      { name: "twitter:image", content: "https://mycomind4-arch-dispute-mail.pages.dev/og-image.png" },
+    ],
+    links: [{ rel: "canonical", href: "https://mycomind4-arch-dispute-mail.pages.dev/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Dispute Mail",
+          description: "Guided workflows to prepare, review, send, and track dispute letters for credit report errors, debt validation, billing errors, and unauthorized charges.",
+          url: "https://mycomind4-arch-dispute-mail.pages.dev",
+          publisher: { "@type": "Organization", name: "MailMyPDF" },
+          hasPart: [
+            { "@type": "WebPage", name: "Dispute a Credit Report Error", url: "https://mycomind4-arch-dispute-mail.pages.dev/workflows/credit-report" },
+            { "@type": "WebPage", name: "Request Debt Validation", url: "https://mycomind4-arch-dispute-mail.pages.dev/workflows/debt-validation" },
+            { "@type": "WebPage", name: "Dispute a Billing Error", url: "https://mycomind4-arch-dispute-mail.pages.dev/workflows/billing-error" },
+            { "@type": "WebPage", name: "Dispute an Unauthorized Charge", url: "https://mycomind4-arch-dispute-mail.pages.dev/workflows/unauthorized-charge" },
+            { "@type": "WebPage", name: "Workflow Directory", url: "https://mycomind4-arch-dispute-mail.pages.dev/workflows" },
+          ],
+        }),
+      },
+    ],
+  }),
+  component: HomePage,
+});
 
 const workflows = [
   { title: "Dispute a Credit Report Error", description: "Dispute inaccurate items on your credit report with Equifax, Experian, or TransUnion under the FCRA.", icon: FileText, href: "/workflows/credit-report" },
