@@ -25,7 +25,7 @@ describe("dispute gold-standard gates", () => {
 
   it("requires every consequential gate before submission", () => {
     const analysis = cleanAnalysis();
-    const baseline = { analysis, draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true };
+    const baseline = { analysis, draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true, paymentComplete: true };
     expect(canSubmitDispute(baseline)).toBe(true);
     expect(canSubmitDispute({ ...baseline, draftValidated: false })).toBe(false);
     expect(canSubmitDispute({ ...baseline, humanApproved: false })).toBe(false);
@@ -39,7 +39,7 @@ describe("dispute submission regression: invalid analysis cannot reach mailing",
     const analysis = cleanAnalysis({
       evidence: [{ id: "e1", description: "Report", status: "requested", supportsFindingIds: [] }],
     });
-    const baseline = { analysis, draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true };
+    const baseline = { analysis, draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true, paymentComplete: true };
     expect(canSubmitDispute(baseline)).toBe(false);
   });
 
@@ -47,13 +47,13 @@ describe("dispute submission regression: invalid analysis cannot reach mailing",
     const analysis = cleanAnalysis({
       findings: [{ id: "f1", state: "ambiguous", title: "Ambiguous", detail: "Needs resolution", severity: "medium" }],
     });
-    const baseline = { analysis, draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true };
+    const baseline = { analysis, draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true, paymentComplete: true };
     expect(canSubmitDispute(baseline)).toBe(false);
   });
 
   it("blocks submission when blocking issues exist even if all other gates pass", () => {
     const analysis = cleanAnalysis({ blockingIssues: ["Missing deadline"] });
-    const baseline = { analysis, draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true };
+    const baseline = { analysis, draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true, paymentComplete: true };
     expect(canSubmitDispute(baseline)).toBe(false);
   });
 
@@ -78,7 +78,7 @@ describe("dispute submission regression: invalid analysis cannot reach mailing",
   });
 
   it("only passes when ALL gates are satisfied simultaneously", () => {
-    const baseline = { analysis: cleanAnalysis(), draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true };
+    const baseline = { analysis: cleanAnalysis(), draftValidated: true, humanApproved: true, recipientComplete: true, proofReady: true, paymentComplete: true };
     expect(canSubmitDispute(baseline)).toBe(true);
   });
 });

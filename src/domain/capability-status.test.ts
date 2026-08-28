@@ -4,7 +4,7 @@ import { getWorkflowCapabilityStatuses, isWorkflowGoldEligible } from "./capabil
 describe("workflow capability status", () => {
   it("credits credit-report as gold with pipeline executor", () => {
     const statuses = getWorkflowCapabilityStatuses();
-    expect(statuses).toHaveLength(4);
+    expect(statuses).toHaveLength(26);
 
     const credit = statuses.find((s) => s.workflowId === "credit-report");
     const debt = statuses.find((s) => s.workflowId === "debt-validation");

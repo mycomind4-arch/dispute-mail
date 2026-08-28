@@ -34,7 +34,12 @@ describe("profile-driven dispute workflow executor", () => {
   });
 
   it("requires explicit approval, payment, provider submission, tracking, and proof", () => {
-    const input = { workflowId: "credit-report" as const, documentId: "credit-doc", text: "Credit report source text", facts: { creditBureau: "Equifax", accountReference: "ABC123", reportingError: "Balance is incorrect", requestedCorrection: "Correct the balance" }, objective: "Correct the reported balance." };
+    const evidenceStatuses = {
+      "evidence-credit-report-page-or-excerpt": "verified",
+      "evidence-identity-address-support-when-relevant": "verified",
+      "evidence-documents-establishing-the-correct-information": "verified",
+    } as const;
+    const input = { workflowId: "credit-report" as const, documentId: "credit-doc", text: "Credit report source text", facts: { creditBureau: "Equifax", accountReference: "ABC123", reportingError: "Balance is incorrect", requestedCorrection: "Correct the balance" }, evidenceStatuses, objective: "Correct the reported balance." };
     const withoutApproval = runProfiledDisputeWorkflow(input, { draftValidated: true, humanApproved: false, recipientComplete: true, paymentComplete: true, mailingSubmitted: true, trackingNumber: "trk-1", proofReady: true });
     expect(withoutApproval.ready).toBe(false);
     expect(withoutApproval.stages.find((stage) => stage.stage === "approval")?.status).toBe("failed");
