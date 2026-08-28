@@ -7,7 +7,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { AuthProvider, useAuth } from "@/lib/auth";
 
-const SITE_ORIGIN = "https://mycomind4-arch-dispute-mail.pages.dev";
+const SITE_ORIGIN = "https://dispute-mail.pages.dev";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
