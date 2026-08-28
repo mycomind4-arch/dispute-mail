@@ -1,3 +1,4 @@
+import { PRICES } from "@mailmypdf/pricing";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Mail, PackageCheck, ShieldCheck, Stamp, Check, ArrowRight, Clock, Shield } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
@@ -10,9 +11,9 @@ export const Route = createFileRoute("/pricing")({
   component: PricingPage,
 });
 const tiers = [
-  { type: "Standard", price: "$4.99", desc: "Standard delivery for non-urgent mail", features: ["3–7 business days", "USPS tracking included", "Professional printing & envelope", "Mailing record retained"], icon: Mail },
-  { type: "Certified", price: "$14.94", desc: "Trackable delivery with confirmation", features: ["3–7 business days", "Delivery tracking + confirmation", "Proof of delivery", "Mailing record retained"], icon: PackageCheck, featured: true },
-  { type: "Registered", price: "$32.49", desc: "Highest security for sensitive documents", features: ["5–10 business days", "Secure handling + tracking", "Insured delivery", "Signature required"], icon: Stamp },
+  { type: "Standard", price: `${(PRICES.standard / 100).toFixed(2)}`, desc: "Standard delivery for non-urgent mail", features: ["3–7 business days", "USPS tracking included", "Professional printing & envelope", "Mailing record retained"], icon: Mail },
+  { type: "Certified", price: `${(PRICES.certified / 100).toFixed(2)}`, desc: "Trackable delivery with confirmation", features: ["3–7 business days", "Delivery tracking + confirmation", "Proof of delivery", "Mailing record retained"], icon: PackageCheck, featured: true },
+  { type: "Registered", price: `${(PRICES.registered / 100).toFixed(2)}`, desc: "Highest security for sensitive documents", features: ["5–10 business days", "Secure handling + tracking", "Insured delivery", "Signature required"], icon: Stamp },
 ];
 const faqs = [
   { q: "Is there a subscription?", a: "No. You pay per mailing — no monthly fee, no commitment." },
