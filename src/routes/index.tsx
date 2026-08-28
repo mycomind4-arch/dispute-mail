@@ -1,3 +1,4 @@
+import { PRICES } from "@mailmypdf/pricing";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2, ShieldAlert, Mail, ShieldCheck, Sparkles, Clock, PackageCheck, Lock, FileUp, ChevronDown, Send, Eye, Stamp, CreditCard, FileText, TrendingUp, Quote } from "lucide-react";
 import { useState } from "react";
@@ -73,7 +74,7 @@ const steps = [
 
 const stats = [
   { value: "3–5", label: "Business day delivery" },
-  { value: "$4.99", label: "Starting price per mailing" },
+  { value: `$${(PRICES.standard / 100).toFixed(2)}`, label: "Starting price for workflow preparation" },
   { value: "100%", label: "You control the facts" },
   { value: "0", label: "Printers needed" },
 ];
@@ -100,7 +101,7 @@ const faqItems = [
   { q: "What types of issues can I dispute?", a: "Credit report errors with the three bureaus, debt validation requests to collectors, medical and utility billing errors, and unauthorized charges with your card issuer or bank." },
   { q: "How does the mailing work?", a: "Your final document is printed, placed in an envelope, and mailed via USPS. You can choose first-class, certified, or certified with return receipt for proof of delivery." },
   { q: "Is my data secure?", a: "All documents are stored with encryption, never shared with third parties, and never used for marketing. You can request full deletion at any time." },
-  { q: "What does it cost?", a: "Costs start at $4.99 per mailing, including printing, paper, envelope, and postage. Certified starts at $14.94. No subscription required." },
+  { q: "What does it cost?", a: "You pay for the workflow preparation (starting at $14.99 for simple disputes), then choose your mailing service ($4.99 standard, $14.94 certified, $32.49 registered). No subscription required." },
 ];
 
 function HomePage() {
@@ -347,9 +348,9 @@ function HomePage() {
           </div>
           <div className="mt-12 grid gap-5 md:grid-cols-4">
             {[
-              { type: "Standard", price: "$4.99", desc: "3–7 business days, tracking included", icon: Mail },
-              { type: "Certified", price: "$14.94", desc: "Delivery tracking + confirmation", icon: PackageCheck },
-              { type: "Registered", price: "$32.49", desc: "Secure handling + tracking, insured", icon: Stamp, featured: true },
+              { type: "Standard", price: `$${(PRICES.standard / 100).toFixed(2)}`, desc: "3–7 business days, tracking included", icon: Mail },
+              { type: "Certified", price: `$${(PRICES.certified / 100).toFixed(2)}`, desc: "Delivery tracking + confirmation", icon: PackageCheck },
+              { type: "Registered", price: `$${(PRICES.registered / 100).toFixed(2)}`, desc: "Secure handling + tracking, insured", icon: Stamp, featured: true },
             ].map(({ type, price, desc, icon: Icon, featured }) => (
               <div key={type} className={`card p-6 text-center ${featured ? "ring-2 ring-rose-400" : ""}`}>
                 {featured && <div className="badge badge-rose mb-3">Most popular</div>}

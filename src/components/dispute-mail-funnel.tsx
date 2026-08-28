@@ -1,3 +1,4 @@
+import { PRICES } from "@mailmypdf/pricing";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth";
 
@@ -13,9 +14,9 @@ export interface DisputeMailFunnelProps {
 }
 
 const OPTIONS = [
-  { id: "standard", label: "Standard", price: "$4.99", cents: 499, detail: "3–7 business days · Tracking included" },
-  { id: "certified", label: "Certified", price: "$14.94", cents: 1494, detail: "Delivery tracking + confirmation" },
-  { id: "registered", label: "Registered", price: "$32.49", cents: 3249, detail: "Secure handling + tracking" },
+  { id: "standard", label: "Standard", price: `$${(PRICES.standard / 100).toFixed(2)}`, cents: PRICES.standard, detail: "3–7 business days · Tracking included" },
+  { id: "certified", label: "Certified", price: `$${(PRICES.certified / 100).toFixed(2)}`, cents: PRICES.certified, detail: "Delivery tracking + confirmation" },
+  { id: "registered", label: "Registered", price: `$${(PRICES.registered / 100).toFixed(2)}`, cents: PRICES.registered, detail: "Secure handling + tracking" },
 ] as const;
 
 export function DisputeMailFunnel({ workflowId, workflowTitle, draft, documentId, caseId, draftValidated, humanApproved }: DisputeMailFunnelProps) {
