@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { runMultiLlm, DEFAULT_DISPUTE_LLM_POLICY, type DisputeLlmProvider, type DisputeLlmTask } from './multi-llm-orchestrator'
 
 function makeProvider(id: string, value: unknown, confidence = 0.9): DisputeLlmProvider {
