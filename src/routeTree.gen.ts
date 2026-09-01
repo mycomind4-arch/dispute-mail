@@ -24,10 +24,13 @@ import { Route as ProductsRouteImport } from './routes/products'
 import { Route as StartRouteImport } from './routes/start'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WriteADisputeLetterRouteImport } from './routes/write-a-dispute-letter'
+import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
+import { Route as AuthSsoCallbackRouteImport } from './routes/auth/sso-callback'
 import { Route as ResourcesIndexRouteImport } from './routes/resources/index'
 import { Route as ResourcesSlugRouteImport } from './routes/resources/$slug'
 import { Route as WorkflowsIndexRouteImport } from './routes/workflows/index'
 import { Route as WorkflowsWorkflowIdRouteImport } from './routes/workflows/$workflowId'
+import { Route as ApiAuthConfigRouteImport } from './routes/api/auth/config'
 import { Route as WorkflowsWorkflowIdStartRouteImport } from './routes/workflows/$workflowId/start'
 import { Route as ApiWorkflowsWorkflowIdAnalyzeRouteImport } from './routes/api/workflows/$workflowId/analyze'
 import { Route as ApiWorkflowsWorkflowIdClaudeRouteImport } from './routes/api/workflows/$workflowId/claude'
@@ -108,6 +111,16 @@ const WriteADisputeLetterRoute = WriteADisputeLetterRouteImport.update({
   path: '/write-a-dispute-letter',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
+  id: '/api/checkout',
+  path: '/api/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthSsoCallbackRoute = AuthSsoCallbackRouteImport.update({
+  id: '/sso-callback',
+  path: '/sso-callback',
+  getParentRoute: () => AuthRoute,
+} as any)
 const ResourcesIndexRoute = ResourcesIndexRouteImport.update({
   id: '/resources/',
   path: '/resources/',
@@ -126,6 +139,11 @@ const WorkflowsIndexRoute = WorkflowsIndexRouteImport.update({
 const WorkflowsWorkflowIdRoute = WorkflowsWorkflowIdRouteImport.update({
   id: '/workflows/$workflowId',
   path: '/workflows/$workflowId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthConfigRoute = ApiAuthConfigRouteImport.update({
+  id: '/api/auth/config',
+  path: '/api/auth/config',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkflowsWorkflowIdStartRoute =
@@ -157,7 +175,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
@@ -169,10 +187,13 @@ export interface FileRoutesByFullPath {
   '/start': typeof StartRoute
   '/terms': typeof TermsRoute
   '/write-a-dispute-letter': typeof WriteADisputeLetterRoute
+  '/api/checkout': typeof ApiCheckoutRoute
+  '/auth/sso-callback': typeof AuthSsoCallbackRoute
   '/resources/$slug': typeof ResourcesSlugRoute
   '/workflows/$workflowId': typeof WorkflowsWorkflowIdRouteWithChildren
   '/resources/': typeof ResourcesIndexRoute
   '/workflows/': typeof WorkflowsIndexRoute
+  '/api/auth/config': typeof ApiAuthConfigRoute
   '/workflows/$workflowId/start': typeof WorkflowsWorkflowIdStartRoute
   '/api/workflows/$workflowId/analyze': typeof ApiWorkflowsWorkflowIdAnalyzeRoute
   '/api/workflows/$workflowId/claude': typeof ApiWorkflowsWorkflowIdClaudeRoute
@@ -182,7 +203,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
@@ -194,10 +215,13 @@ export interface FileRoutesByTo {
   '/start': typeof StartRoute
   '/terms': typeof TermsRoute
   '/write-a-dispute-letter': typeof WriteADisputeLetterRoute
+  '/api/checkout': typeof ApiCheckoutRoute
+  '/auth/sso-callback': typeof AuthSsoCallbackRoute
   '/resources/$slug': typeof ResourcesSlugRoute
   '/workflows/$workflowId': typeof WorkflowsWorkflowIdRouteWithChildren
   '/resources': typeof ResourcesIndexRoute
   '/workflows': typeof WorkflowsIndexRoute
+  '/api/auth/config': typeof ApiAuthConfigRoute
   '/workflows/$workflowId/start': typeof WorkflowsWorkflowIdStartRoute
   '/api/workflows/$workflowId/analyze': typeof ApiWorkflowsWorkflowIdAnalyzeRoute
   '/api/workflows/$workflowId/claude': typeof ApiWorkflowsWorkflowIdClaudeRoute
@@ -208,7 +232,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
@@ -220,10 +244,13 @@ export interface FileRoutesById {
   '/start': typeof StartRoute
   '/terms': typeof TermsRoute
   '/write-a-dispute-letter': typeof WriteADisputeLetterRoute
+  '/api/checkout': typeof ApiCheckoutRoute
+  '/auth/sso-callback': typeof AuthSsoCallbackRoute
   '/resources/$slug': typeof ResourcesSlugRoute
   '/workflows/$workflowId': typeof WorkflowsWorkflowIdRouteWithChildren
   '/resources/': typeof ResourcesIndexRoute
   '/workflows/': typeof WorkflowsIndexRoute
+  '/api/auth/config': typeof ApiAuthConfigRoute
   '/workflows/$workflowId/start': typeof WorkflowsWorkflowIdStartRoute
   '/api/workflows/$workflowId/analyze': typeof ApiWorkflowsWorkflowIdAnalyzeRoute
   '/api/workflows/$workflowId/claude': typeof ApiWorkflowsWorkflowIdClaudeRoute
@@ -247,10 +274,13 @@ export interface FileRouteTypes {
     | '/start'
     | '/terms'
     | '/write-a-dispute-letter'
+    | '/api/checkout'
+    | '/auth/sso-callback'
     | '/resources/$slug'
     | '/workflows/$workflowId'
     | '/resources/'
     | '/workflows/'
+    | '/api/auth/config'
     | '/workflows/$workflowId/start'
     | '/api/workflows/$workflowId/analyze'
     | '/api/workflows/$workflowId/claude'
@@ -272,10 +302,13 @@ export interface FileRouteTypes {
     | '/start'
     | '/terms'
     | '/write-a-dispute-letter'
+    | '/api/checkout'
+    | '/auth/sso-callback'
     | '/resources/$slug'
     | '/workflows/$workflowId'
     | '/resources'
     | '/workflows'
+    | '/api/auth/config'
     | '/workflows/$workflowId/start'
     | '/api/workflows/$workflowId/analyze'
     | '/api/workflows/$workflowId/claude'
@@ -297,10 +330,13 @@ export interface FileRouteTypes {
     | '/start'
     | '/terms'
     | '/write-a-dispute-letter'
+    | '/api/checkout'
+    | '/auth/sso-callback'
     | '/resources/$slug'
     | '/workflows/$workflowId'
     | '/resources/'
     | '/workflows/'
+    | '/api/auth/config'
     | '/workflows/$workflowId/start'
     | '/api/workflows/$workflowId/analyze'
     | '/api/workflows/$workflowId/claude'
@@ -311,7 +347,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AccountRoute: typeof AccountRoute
-  AuthRoute: typeof AuthRoute
+  AuthRoute: typeof AuthRouteWithChildren
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRoute
   FaqRoute: typeof FaqRoute
@@ -323,10 +359,12 @@ export interface RootRouteChildren {
   StartRoute: typeof StartRoute
   TermsRoute: typeof TermsRoute
   WriteADisputeLetterRoute: typeof WriteADisputeLetterRoute
+  ApiCheckoutRoute: typeof ApiCheckoutRoute
   ResourcesSlugRoute: typeof ResourcesSlugRoute
   WorkflowsWorkflowIdRoute: typeof WorkflowsWorkflowIdRouteWithChildren
   ResourcesIndexRoute: typeof ResourcesIndexRoute
   WorkflowsIndexRoute: typeof WorkflowsIndexRoute
+  ApiAuthConfigRoute: typeof ApiAuthConfigRoute
   ApiWorkflowsWorkflowIdAnalyzeRoute: typeof ApiWorkflowsWorkflowIdAnalyzeRoute
   ApiWorkflowsWorkflowIdClaudeRoute: typeof ApiWorkflowsWorkflowIdClaudeRoute
   ApiWorkflowsWorkflowIdDocumentRoute: typeof ApiWorkflowsWorkflowIdDocumentRoute
@@ -439,6 +477,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WriteADisputeLetterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/checkout': {
+      id: '/api/checkout'
+      path: '/api/checkout'
+      fullPath: '/api/checkout'
+      preLoaderRoute: typeof ApiCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/sso-callback': {
+      id: '/auth/sso-callback'
+      path: '/sso-callback'
+      fullPath: '/auth/sso-callback'
+      preLoaderRoute: typeof AuthSsoCallbackRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/resources/': {
       id: '/resources/'
       path: '/resources'
@@ -465,6 +517,13 @@ declare module '@tanstack/react-router' {
       path: '/workflows/$workflowId'
       fullPath: '/workflows/$workflowId'
       preLoaderRoute: typeof WorkflowsWorkflowIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/config': {
+      id: '/api/auth/config'
+      path: '/api/auth/config'
+      fullPath: '/api/auth/config'
+      preLoaderRoute: typeof ApiAuthConfigRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/workflows/$workflowId/start': {
@@ -498,6 +557,16 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthRouteChildren {
+  AuthSsoCallbackRoute: typeof AuthSsoCallbackRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthSsoCallbackRoute: AuthSsoCallbackRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 interface WorkflowsWorkflowIdRouteChildren {
   WorkflowsWorkflowIdStartRoute: typeof WorkflowsWorkflowIdStartRoute
 }
@@ -513,7 +582,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AccountRoute: AccountRoute,
-  AuthRoute: AuthRoute,
+  AuthRoute: AuthRouteWithChildren,
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRoute,
   FaqRoute: FaqRoute,
@@ -525,10 +594,12 @@ const rootRouteChildren: RootRouteChildren = {
   StartRoute: StartRoute,
   TermsRoute: TermsRoute,
   WriteADisputeLetterRoute: WriteADisputeLetterRoute,
+  ApiCheckoutRoute: ApiCheckoutRoute,
   ResourcesSlugRoute: ResourcesSlugRoute,
   WorkflowsWorkflowIdRoute: WorkflowsWorkflowIdRouteWithChildren,
   ResourcesIndexRoute: ResourcesIndexRoute,
   WorkflowsIndexRoute: WorkflowsIndexRoute,
+  ApiAuthConfigRoute: ApiAuthConfigRoute,
   ApiWorkflowsWorkflowIdAnalyzeRoute: ApiWorkflowsWorkflowIdAnalyzeRoute,
   ApiWorkflowsWorkflowIdClaudeRoute: ApiWorkflowsWorkflowIdClaudeRoute,
   ApiWorkflowsWorkflowIdDocumentRoute: ApiWorkflowsWorkflowIdDocumentRoute,
